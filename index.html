@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- STREAMING_CHUNK: Setting up head, fonts, and custom styles... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧸 JJ Company M.T. 스마트 다이어리</title>
+    <!-- Tailwind CSS & FontAwesome for cute icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for cute rounded lettering -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:wght@400;700;900&family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Pretendard', 'Fredoka', 'Nunito', sans-serif;
+            background-color: #FCF6F0; /* Warm milky oat color */
+            color: #4A3E3D; /* Deep warm cocoa instead of harsh black */
+        }
+        /* Custom scrollbar to keep it super tidy */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5EFE6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFCDB2;
+            border-radius: 10px;
+        }
+        .bouncy-hover {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bouncy-hover:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .bouncy-hover:active {
+            transform: translateY(1px) scale(0.98);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#FFD1D1] selection:text-[#803E3D] min-h-screen pb-16">
+
+    <!-- STREAMING_CHUNK: Rendering the adorable header and navigation tabs... -->
+    <!-- CUTE HEADER -->
+    <header class="relative overflow-hidden bg-gradient-to-b from-[#FFF2EB] to-[#FFF9F5] border-b-4 border-[#F5E1D3] py-10 px-4 text-center">
+        <!-- Soft background polka dots -->
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#FFB4A2_1.5px,transparent_1.5px)] bg-[size:24px_24px]"></div>
+        
+        <div class="relative max-w-4xl mx-auto">
+            <div class="inline-flex items-center gap-1.5 bg-[#FFF0F2] border-2 border-[#FFCCD5] text-[#E56A77] px-4 py-1 rounded-full text-xs font-black tracking-wider mb-3 animate-bounce shadow-sm">
+                🍓 JJ Company 2026 M.T. 🍓
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-[#7D5A50] tracking-tight">
+                🍯 JJ Company M.T. 다이어리
+            </h1>
+            <p class="mt-3 text-[#9E847A] text-xs md:text-sm max-w-xl mx-auto font-medium leading-relaxed">
+                익산의 감성 독채 한 한옥과 태안 바닷가 선셋 리조트에서 펼쳐지는<br>
+                2박 3일 달콤포근 멤버십 트레이닝 일정표 & AI 플래너 🧸🏡
+            </p>
+            
+            <div class="mt-5 inline-flex flex-wrap items-center justify-center gap-3 text-2xs md:text-xs text-[#7A645A] bg-white/90 border-2 border-[#F3EDE2] px-4 py-2.5 rounded-2xl shadow-sm">
+                <span>📅 <strong>7월 10일(금) - 12일(일)</strong></span>
+                <span class="text-[#EADFC9]">|</span>
+                <span>🏡 고도한옥 1985 & 아일랜드 리솜 🌊</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 mt-8">
+        
+        <!-- TABS NAVIGATOR -->
+        <div class="flex overflow-x-auto gap-2 p-1.5 bg-[#F4EDE2] border-2 border-[#E3D5C1] rounded-2xl mb-8 shadow-inner scrollbar-none">
+            <button onclick="switchTab('day1')" id="btn-day1" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
+                <span>🎈 7.10 (금)</span>
+                <span>1일차 - 익산</span>
+            </button>
+            <button onclick="switchTab('day2')" id="btn-day2" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
+                <span>🌊 7.11 (토)</span>
+                <span>2일차 - 태안</span>
+            </button>
+            <button onclick="switchTab('day3')" id="btn-day3" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
+                <span>🍼 7.12 (일)</span>
+                <span>3일차 - 해산</span>
+            </button>
+            <button onclick="switchTab('checklist')" id="btn-checklist" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
+                <span>🎒 캐리어 체크</span>
+                <span>준비물 마스터</span>
+            </button>
+            <button onclick="switchTab('bbq')" id="btn-bbq" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
+                <span>🥩 바베큐 장보기</span>
+                <span>식기/음주 계산기</span>
+            </button>
+            <button onclick="switchTab('ai')" id="btn-ai" class="flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-violet-500 hover:bg-violet-100/50">
+                <span>🧚‍♀️ AI 요정</span>
+                <span>스마트 헬퍼 Hub</span>
+              </button>
+        </div>
+
+        <!-- STREAMING_CHUNK: Building the Day 1, 2, 3 interactive timeline lists... -->
+        <!-- DAY 1 TIMELINE PANEL -->
+        <div id="panel-day1" class="tab-panel space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
+                <div>
+                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                        <span class="w-3 h-6 bg-[#FFB4A2] rounded-full inline-block"></span>
+                        7월 10일 (금) : 1일차
+                    </h2>
+                    <p class="text-xs text-[#9E847A] mt-1">한옥의 따스함과 함께하는 첫걸음 🏡</p>
+                </div>
+                <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-3 py-1.5 rounded-xl">
+                    🏮 거점지: 익산 고도한옥 1985
+                </span>
+            </div>
+
+            <!-- List Timeline -->
+            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
+                <!-- Item 1 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 10:30</span>
+                            <span class="text-3xs font-bold text-[#A8DADC] bg-[#E8F8F5] px-2 py-0.5 rounded-full">자유 출발</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🚗 설레는 개별 출발!</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">지정 경로 및 개인차량으로 네비를 찍고 안전하고 유쾌하게 익산으로 출동합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 12:50</span>
+                            <span class="text-3xs font-bold text-[#4CAF50] bg-[#E8F5E9] px-2.5 py-1 rounded-full border border-[#C8E6C9]">🍀 예약 완료 🍀</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍱 점심 식사 : 본향 익산</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">향토적인 깊은 맛이 매력적인 '서동선화' 마 한정식 코스 요리를 온몸으로 즐깁니다.</p>
+                        <div class="mt-3 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-3 text-3xs text-[#8D6E63] flex gap-2">
+                            <span>💡</span>
+                            <p><strong>단체 안내:</strong> 예약 시간(12:50)에 정시에 들어가기 위해 10분 전에는 매장 앞으로 꼭 모여주세요!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 14:00</span>
+                            <span class="text-3xs font-bold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">✨ AI 추천 스팟 ✨</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">☕ 근처 감성 카페 투어 (약 1시간)</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">식사를 마친 뒤 도란도란 모여 앉아 커피와 음료를 마시며 여유로운 한 시간을 보냅니다.</p>
+                        <div class="mt-3 bg-[#FFFDF7] border border-dashed border-indigo-200 rounded-xl p-3 text-3xs text-indigo-700/80 flex gap-2">
+                            <span>🧁</span>
+                            <p><strong>요정의 꿀추천:</strong> 전통적인 마당이 매혹적인 고즈넉 전통 카페 <strong>'단향'</strong>을 추천해요. 시그니처 전통차와 약과를 곁들이면 환상적이랍니다!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 15:00</span>
+                            <span class="text-3xs font-bold text-amber-600 bg-[#FFFBEB] px-2 py-0.5 rounded-full">장바구니 쏙</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🛒 M.T. 마트 & 전통시장 털기 (약 1시간)</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">첫날 한옥 만찬을 위한 필수 고기, 야식 안주, 음료, 생수 등을 야무지게 담아 구매합니다.</p>
+                        <div class="mt-3 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-3 text-3xs text-[#8D6E63] flex gap-2">
+                            <span>🛍</span>
+                            <p><strong>로컬 시장 탐방:</strong> 익산의 정겨운 <strong>금마전통시장</strong> 구경도 쏠쏠하고, 대량 공산품과 주류는 근처 <strong>하나로마트</strong>를 교차로 돌면 가장 알차요!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 16:00</span>
+                            <span class="text-3xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full">체크인</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏡 고도한옥 1985 감성 입실</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">익산의 아름답고 세련된 독채 한옥 숙소 고도한옥 1985에 기분 좋게 짐을 풀고 단체 사진을 남깁니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 18:00</span>
+                            <span class="text-3xs font-bold text-[#9F847A] bg-[#F4EDE2] px-2 py-0.5 rounded-full">친목 밤</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍳 정겨운 저녁 요리 & 친목 도모 밤샘 밤</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">역할을 나눠 맛있는 한옥 홈메이드 저녁을 직접 정성껏 지어 먹으며 도란도란 소소하고 재밌는 벌칙 내기 보드게임이나 깊은 수다를 나눕니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 2 TIMELINE PANEL -->
+        <div id="panel-day2" class="tab-panel hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
+                <div>
+                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                        <span class="w-3 h-6 bg-[#A3E4D7] rounded-full inline-block"></span>
+                        7월 11일 (토) : 2일차
+                    </h2>
+                    <p class="text-xs text-[#9E847A] mt-1">군산 감성 산책과 해질녘 선셋 드라이브 🌊</p>
+                </div>
+                <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-3 py-1.5 rounded-xl">
+                    🏨 거점지: 태안 안면도 아일랜드 리솜
+                </span>
+            </div>
+
+            <!-- List Timeline -->
+            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
+                <!-- Item 1 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 11:00</span>
+                            <span class="text-3xs font-bold text-stone-500 bg-stone-50 px-2 py-0.5 rounded-full">체크아웃</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏡 고도한옥 1985 체크아웃</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">숙소 분리수거 및 소지품 더블 체크 후 군산 방면으로 고고싱!</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 12:00</span>
+                            <span class="text-3xs font-bold text-[#386641] bg-[#E2F0D9] px-2 py-0.5 rounded-full">경유지</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🚉 익산역 경유</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">추가 승차나 픽업이 필요한 동료 멤버들을 챙기기 위해 익산역에 일시 정차하여 동선을 정비합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 13:00</span>
+                            <span class="text-3xs font-bold text-violet-500 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">✨ AI 추천 스팟 ✨</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍚 군산에서의 즐거운 점심 (미정)</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">근대 양식과 이국적인 포구가 펼쳐진 군산 시내에서 취향에 따른 점심 식사!</p>
+                        <div class="mt-3 bg-[#FFFDF7] border border-dashed border-violet-200 rounded-xl p-3 text-3xs text-violet-700/80 flex gap-2">
+                            <span>🍲</span>
+                            <p><strong>요정의 강추 픽:</strong> 군산하면 소고기무국의 성지인 노포 맛집 <strong>'한일옥'</strong>이 아주 기가 막혀요. 국물 리필도 가능한 찐맛집이지만 웨이팅이 길어 테이블링 원격 줄서기가 필수!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 14:30</span>
+                            <span class="text-3xs font-bold text-amber-500 bg-[#FFFBEB] px-2 py-0.5 rounded-full">관광 핫플</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🥖 최초의 단팥빵집 이성당 빵 쇼핑</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">우리나라 역사와 전통의 시조새 이성당에 들려 달달한 야채빵과 단팥빵 등을 맛봅니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 15:30</span>
+                            <span class="text-3xs font-bold text-sky-500 bg-sky-50 px-2 py-0.5 rounded-full">오션 드라이브</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏖 선유도 관광 & 새만금방조제 드라이브</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">양옆으로 광활하게 펼쳐진 서해 바다를 달리는 떼창 드라이브와 고운 모래의 선유도 낙조를 걷습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 18:00</span>
+                            <span class="text-3xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full">안면도 진입</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏨 아일랜드 리솜 입실 & 바베큐 파티 시작</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">서해안 끝자락, 꽃지해수욕장 1열에 위치한 태안 아일랜드 리솜에 들어와 최고의 선셋을 보며 낭만적인 야외 바베큐 파티를 진행합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 3 TIMELINE PANEL -->
+        <div id="panel-day3" class="tab-panel hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
+                <div>
+                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                        <span class="w-3 h-6 bg-[#FFCDB2] rounded-full inline-block"></span>
+                        7월 12일 (일) : 3일차
+                    </h2>
+                    <p class="text-xs text-[#9E847A] mt-1">서해안의 상쾌한 바닷바람과 마무리 해산 🐚</p>
+                </div>
+                <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-3 py-1.5 rounded-xl">
+                    🚗 안전 귀가 및 해산
+                </span>
+            </div>
+
+            <!-- List Timeline -->
+            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
+                <!-- Item 1 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFCDB2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFCDB2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 10:00</span>
+                            <span class="text-3xs font-bold text-amber-600 bg-[#FFFBEB] px-2 py-0.5 rounded-full">해장 모닝</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍜 모닝 해장 파티</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">시원한 바다 파도를 보며 어젯밤의 술기운을 시원하게 풀어줄 아침 모닝 라면이나 해장 푸드를 가볍게 먹습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFCDB2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFCDB2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 11:00</span>
+                            <span class="text-3xs font-bold text-stone-500 bg-stone-50 px-2 py-0.5 rounded-full">체크아웃</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🔑 아일랜드 리솜 체크아웃</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">2박 3일의 알차고 행복했던 소중한 우정 추억들을 방구석에 남기고 퇴실합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFCDB2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFCDB2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 11:30</span>
+                            <span class="text-3xs font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">힐링 카페</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍹 해변가 감성 오션뷰 카페 여유</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">탁 트인 안면도 바다의 테라스에 비스듬히 누워 시원한 음료와 함께 서로 찍어준 귀여운 꼬질샷 사진들을 무한 교환합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFCDB2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFCDB2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 13:00</span>
+                            <span class="text-3xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">로컬 찐푸드</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🦀 안면도 특산 게국지 점심 식사</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">얼큰하면서도 꽃게 특유의 감칠맛이 예술적으로 도는 게국지 한 상으로 완벽하게 영양을 채웁니다.</p>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFCDB2] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFCDB2] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 14:30</span>
+                            <span class="text-3xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full">해산</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🚗 아쉬움을 뒤로 한 공식 해산</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">행복 충전을 100% 완료하고 졸음운전 방지껌과 커피를 챙겨 집을 향해 출발합니다!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STREAMING_CHUNK: Implementing the cute checklist with progress bar... -->
+        <!-- CHECKLIST PANEL -->
+        <div id="panel-checklist" class="tab-panel hidden space-y-6">
+            <div class="border-b-2 border-[#E8DFD0] pb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                        <span class="w-3 h-6 bg-[#B5E2FA] rounded-full inline-block"></span>
+                        🎒 M.T. 가방 속 필수 체크리스트
+                    </h2>
+                    <p class="text-xs text-[#9E847A] mt-1">친구들과 하나하나 지워가며 완벽하게 가방을 완성해요! 🧸</p>
+                </div>
+                <button onclick="copyChecklist()" class="bg-[#B5E2FA] hover:bg-[#97D4F5] text-[#3D525C] border border-[#8CD1F7] text-3xs font-bold px-3 py-2 rounded-xl bouncy-hover shadow-sm">
+                    💬 카톡방에 짐 자랑하기 (복사)
+                </button>
+            </div>
+
+            <!-- Progress Bar Card -->
+            <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl shadow-sm">
+                <div class="flex justify-between items-center text-xs font-bold text-[#6E5044] mb-2">
+                    <span>🎒 우리의 캐리어 패킹률</span>
+                    <span id="pack-percent" class="text-[#E76F51]">0% (0/0개 완료)</span>
+                </div>
+                <div class="w-full bg-[#FCF6F0] rounded-full h-4 border border-[#EBE3D5] overflow-hidden p-0.5">
+                    <div id="pack-progress" class="bg-gradient-to-r from-[#A3E4D7] to-[#B5E2FA] h-full rounded-full transition-all duration-500 shadow-inner" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Grid Boxes by Category -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="checklist-grid">
+                <!-- Will be dynamically populated via JS -->
+            </div>
+
+            <!-- Add custom item box -->
+            <form id="add-item-form" class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl shadow-sm space-y-3">
+                <h4 class="text-xs font-bold text-[#6E5044]">🎒 깜빡한 나만의 짐 추가하기</h4>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="custom-item-text" placeholder="예: 무선 헤드폰, 편안한 안대, 젤리..." required class="flex-1 bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-4 py-2.5 text-xs text-[#4A3E3D] placeholder-stone-400 focus:outline-none focus:border-[#FFCDB2]">
+                    <select id="custom-item-cat" class="bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2.5 text-xs text-[#4A3E3D] focus:outline-none focus:border-[#FFCDB2] font-bold">
+                        <option value="필수">🚨 필수</option>
+                        <option value="개인">🎒 개인</option>
+                        <option value="마트">🛒 마트</option>
+                        <option value="기타">🎪 기타</option>
+                    </select>
+                    <button type="submit" class="bg-[#FFB4A2] hover:bg-[#FF9E80] text-[#7D5A50] font-black text-xs px-5 py-2.5 rounded-xl bouncy-hover shadow-sm">
+                        가방에 콕!
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STREAMING_CHUNK: Designing the BBQ shopping cart calculator... -->
+        <!-- BBQ CALCULATOR PANEL -->
+        <div id="panel-bbq" class="tab-panel hidden space-y-6">
+            <div class="border-b-2 border-[#E8DFD0] pb-3">
+                <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                    <span class="w-3 h-6 bg-[#FFE5A3] rounded-full inline-block"></span>
+                    🥩 M.T. 식기 & 바베큐 장보기 영수증
+                </h2>
+                <p class="text-xs text-[#9E847A] mt-1">남거나 버리는 일 없도록 4인부터 실시간으로 양을 뚝딱 맞춥니다!</p>
+            </div>
+
+            <!-- Config Grid Box -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 1. People count -->
+                <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                    <div>
+                        <h4 class="text-2xs font-bold text-[#E76F51] uppercase tracking-wider mb-1">1. 함께 먹을 요정 멤버 수</h4>
+                        <p class="text-[10px] text-stone-400 mb-3">M.T.에 함께하는 총멤버 수</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="changePeople(-1)" class="w-10 h-10 rounded-xl bg-[#FCF6F0] border-2 border-[#EBE3D5] flex items-center justify-center font-bold hover:bg-[#F5EFE6] text-[#E76F51] bouncy-hover">-</button>
+                        <span id="bbq-people-num" class="flex-1 text-center font-black text-xl text-[#4A3E3D]">4명</span>
+                        <button onclick="changePeople(1)" class="w-10 h-10 rounded-xl bg-[#FCF6F0] border-2 border-[#EBE3D5] flex items-center justify-center font-bold hover:bg-[#F5EFE6] text-[#E76F51] bouncy-hover">+</button>
+                    </div>
+                </div>
+
+                <!-- 2. Appetite select -->
+                <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                    <div>
+                        <h4 class="text-2xs font-bold text-[#16A085] uppercase tracking-wider mb-1">2. 고기 식성 수준</h4>
+                        <p class="text-[10px] text-stone-400 mb-3">평소 고기를 얼마나 먹나요?</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 bg-[#F4EDE2] p-1 rounded-xl">
+                        <button onclick="setAppetite('light')" id="btn-app-light" class="py-2 text-[10px] font-bold rounded-lg transition-all">소식 (200g)</button>
+                        <button onclick="setAppetite('normal')" id="btn-app-normal" class="py-2 text-[10px] font-bold rounded-lg transition-all">보통 (300g)</button>
+                        <button onclick="setAppetite('heavy')" id="btn-app-heavy" class="py-2 text-[10px] font-bold rounded-lg transition-all">대식 (400g)</button>
+                    </div>
+                </div>
+
+                <!-- 3. Alcohol select -->
+                <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                    <div>
+                        <h4 class="text-2xs font-bold text-violet-500 uppercase tracking-wider mb-1">3. 술고래 주량 등급</h4>
+                        <p class="text-[10px] text-stone-400 mb-3">오늘 밤 분위기를 어떻게 돋울까요?</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 bg-[#F4EDE2] p-1 rounded-xl">
+                        <button onclick="setAlcohol('none')" id="btn-alc-none" class="py-2 text-[10px] font-bold rounded-lg transition-all">논알콜🥤</button>
+                        <button onclick="setAlcohol('mild')" id="btn-alc-mild" class="py-2 text-[10px] font-bold rounded-lg transition-all">도란도란🥂</button>
+                        <button onclick="setAlcohol('heavy')" id="btn-alc-heavy" class="py-2 text-[10px] font-bold rounded-lg transition-all">불타게🔥</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Output Invoice Card -->
+            <div class="bg-[#FCF9F5] border-2 border-[#FFCDB2] p-6 rounded-3xl shadow-sm">
+                <h3 class="text-sm font-bold text-[#7D5A50] mb-4 flex items-center gap-1.5">
+                    📋 추천 마트 장보기 영수증 (실시간 계산 완료)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Meat Info -->
+                    <div class="bg-white border-2 border-[#FFCCD5] p-4 rounded-2xl">
+                        <span class="text-2xs font-extrabold text-rose-500 uppercase block mb-1">🥓 정육 추천량</span>
+                        <div id="out-total-meat" class="text-lg font-black text-[#4A3E3D]">1.2 kg</div>
+                        <div class="mt-2 space-y-1 text-3xs text-[#7A645A]">
+                          <div class="flex justify-between border-b border-dashed pb-1">
+                            <span>🐷 삼겹살&목살 (70%)</span>
+                            <strong id="out-pork" class="text-rose-500">840 g</strong>
+                          </div>
+                          <div class="flex justify-between pt-1">
+                            <span>🐮 맛보기 갈비/특수 (30%)</span>
+                            <strong id="out-beef" class="text-rose-500">360 g</strong>
+                          </div>
+                        </div>
+                    </div>
+
+                    <!-- Alcohol/Drinks -->
+                    <div class="bg-white border-2 border-[#B5E2FA] p-4 rounded-2xl">
+                        <span class="text-2xs font-extrabold text-[#3D525C] uppercase block mb-1">🍶 주류 및 음료</span>
+                        <div id="out-drinks" class="text-lg font-black text-[#4A3E3D]">소주 4병 + 맥주 6캔</div>
+                        <p class="text-3xs text-stone-400 mt-1 leading-relaxed">숙취해소제를 미리 마시고 도란도란 맛있는 안주와 함께 즐거운 대화를 이어가요!</p>
+                    </div>
+
+                    <!-- Extras -->
+                    <div class="bg-white border-2 border-[#EADFC9] p-4 rounded-2xl sm:col-span-2 shadow-inner">
+                        <span class="text-2xs font-extrabold text-amber-700 block mb-2">📦 필수 부재료 & 가루 소스량</span>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-3xs text-[#4A3E3D] font-bold">
+                            <div class="bg-[#FCF6F0] p-2 rounded-xl text-center">
+                                <span class="block text-stone-400 text-[9px] mb-0.5">생수 용량</span>
+                                <strong id="out-water" class="text-[#E76F51]">6 리터</strong>
+                            </div>
+                            <div class="bg-[#FCF6F0] p-2 rounded-xl text-center">
+                                <span class="block text-stone-400 text-[9px] mb-0.5">해장 라면</span>
+                                <strong id="out-ramyeon" class="text-[#E76F51]">5 봉지</strong>
+                            </div>
+                            <div class="bg-[#FCF6F0] p-2 rounded-xl text-center">
+                                <span class="block text-stone-400 text-[9px] mb-0.5">포장 김치</span>
+                                <strong id="out-kimchi" class="text-[#E76F51]">400 g</strong>
+                            </div>
+                            <div class="bg-[#FCF6F0] p-2 rounded-xl text-center">
+                                <span class="block text-stone-400 text-[9px] mb-0.5">따끈 햇반</span>
+                                <strong id="out-rice" class="text-[#E76F51]">5 개입</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STREAMING_CHUNK: Crafting the AI Assistant Hub and Chat interface... -->
+        <!-- AI TOUR ASSISTANT PANEL -->
+        <div id="panel-ai" class="tab-panel hidden space-y-6">
+            <div class="border-b-2 border-[#E8DFD0] pb-3">
+                <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
+                    <span class="w-3 h-6 bg-violet-300 rounded-full inline-block"></span>
+                    🧚‍♀️ AI M.T. 가이드 요정 방
+                </h2>
+                <p class="text-xs text-[#9E847A] mt-1">Gemini 요정 비서가 2박 3일의 세부 일정과 맛집, 돌발 날씨 가이드 및 게임 구성을 맞춤 연성합니다.</p>
+            </div>
+
+            <!-- Optional Key Injection -->
+            <div class="bg-white border-2 border-[#F3EDE2] p-4 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm text-xs">
+                <div>
+                    <strong class="text-violet-600 block mb-0.5">Gemini 마법 스톤 장착 (선택)</strong>
+                    <span class="text-stone-400 text-[10px]">더 완벽하고 튼튼한 무제한 한도를 가동하고 싶다면 개인 API Key를 살짝 입력해 주세요.</span>
+                </div>
+                <input type="password" id="api-key-input" placeholder="Gemini API Key (선택사항)" class="bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-2xs text-[#4A3E3D] placeholder-stone-400 focus:outline-none focus:border-violet-300 min-w-[210px]">
+            </div>
+
+            <!-- Double Feature Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Game creator sidebar -->
+                <div class="lg:col-span-5 bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm space-y-4">
+                    <div>
+                        <h3 class="text-xs font-black text-[#4A3E3D] flex items-center gap-1.5">
+                            🎮 감성 레크레이션 게임 조제기
+                        </h3>
+                        <p class="text-stone-400 text-[10px] leading-relaxed">익산 한옥 바닥과 태안 해변에서 펼칠 포복절도 재미 보장 우정 놀이 카드를 구성해보세요.</p>
+                        
+                        <div class="space-y-3 mt-4">
+                            <div>
+                                <label class="block text-[10px] text-[#8D6E63] font-bold mb-1">어떤 분위기의 게임?</label>
+                                <select id="game-vibe-select" class="w-full bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-xs text-[#4A3E3D] focus:outline-none focus:border-violet-300">
+                                    <option value="drinking">🍻 텐션 대폭발! 핑크빛 술자리 게임</option>
+                                    <option value="brain">🧠 가만히 둘러앉아 뇌풀기 추리 게임</option>
+                                    <option value="physical">🏃 온몸을 베베 꼬는 바디 바이브 액션</option>
+                                    <option value="icebreaker">🧊 서먹함을 한방에 깨부술 아이스 브레이커</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-[#8D6E63] font-bold mb-1">소요 시간 설정</label>
+                                <select id="game-time-select" class="w-full bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-xs text-[#4A3E3D] focus:outline-none focus:border-violet-300">
+                                    <option value="short">⚡ 5분~10분 순식간에 끝나는 게임</option>
+                                    <option value="mid">🕰️ 20분~30분 딥한 우정 만들기</option>
+                                    <option value="long">🎪 1시간 장기자랑 및 장엄한 세션</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="triggerGameGenerator()" id="btn-generate-game" class="w-full bg-violet-400 hover:bg-violet-500 text-white font-black text-xs py-3.5 rounded-xl bouncy-hover shadow-sm">
+                        ✨ 맞춤형 게임 연성하기
+                    </button>
+                </div>
+
+                <!-- Chat assistant window -->
+                <div class="lg:col-span-7 bg-white border-2 border-[#F3EDE2] rounded-3xl overflow-hidden flex flex-col h-[460px] shadow-sm">
+                    <!-- Chat Header -->
+                    <div class="bg-[#FFF9F5] px-4 py-3 border-b-2 border-[#F5E1D3] flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse"></span>
+                            <span class="text-2xs font-extrabold text-[#7D5A50]">요정 비서와 실시간 수다</span>
+                        </div>
+                        <button onclick="resetChat()" class="text-[10px] text-stone-400 hover:text-[#E76F51] font-bold">대화 리셋</button>
+                    </div>
+
+                    <!-- Chat conversation box -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#FCFBF7] scrollbar-none">
+                        <!-- Initial assistant text -->
+                        <div class="flex flex-col items-start max-w-[85%]">
+                            <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">M.T. AI 비서 🧚‍♀️</span>
+                            <div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none leading-relaxed shadow-sm">
+                                안녕하세요! JJ Company M.T.를 알록달록 케어할 요정 비서입니다! 🧚‍♀️<br>익산 한옥마을의 이쁜 전통찻집부터 군산 이성당 빵집, 태안 아일랜드 리솜 선셋까지 상세 꿀팁을 무엇이든 말씀해 주시면 기쁘게 컨설팅해 드릴게요! 아래에 유용한 빠른 질문들도 준비했답니다! 💛
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Templates carousel -->
+                    <div class="px-3 py-2 border-t border-[#F3EDE2] bg-[#FFF9F5] flex gap-1.5 overflow-x-auto scrollbar-none">
+                        <button onclick="sendQuickQuery('익산 고도한옥 1985 주변 3분 거리 한옥 풍경의 카페 가볼만한곳 어딨니?')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 hover:text-violet-600 border border-stone-200 px-2.5 py-1.5 rounded-lg text-[9px] font-bold bouncy-hover">
+                            ☕ 한옥 주변 이쁜 카페
+                        </button>
+                        <button onclick="sendQuickQuery('2일차 군산 이성당에서 꼭 사야하는 종류와 웨이팅 안밀리는 개꿀팁은?')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 hover:text-violet-600 border border-stone-200 px-2.5 py-1.5 rounded-lg text-[9px] font-bold bouncy-hover">
+                            🥖 이성당 빵 추천 꿀팁
+                        </button>
+                        <button onclick="sendQuickQuery('태안 아일랜드 리솜에서 고기 구울 때 기분 텐션 팍팍 살려주는 신나는 음악 리스트 알려줘')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 hover:text-violet-600 border border-stone-200 px-2.5 py-1.5 rounded-lg text-[9px] font-bold bouncy-hover">
+                            🎵 힙한 바베큐 플리 추천
+                        </button>
+                    </div>
+
+                    <!-- Input form -->
+                    <form id="chat-input-form" class="p-3 border-t-2 border-[#F3EDE2] bg-white flex gap-2">
+                        <input type="text" id="chat-box-text" placeholder="요정아, 군산이나 안면도에 갑자기 비 오면 어딜 갈까?..." required class="flex-1 bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-4 py-2 text-xs text-[#4A3E3D] placeholder-stone-400 focus:outline-none focus:border-violet-300">
+                        <button type="submit" class="bg-violet-400 hover:bg-violet-500 text-white font-black text-xs px-5 py-2 rounded-xl bouncy-hover shadow-sm">날려!</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Game Result Card -->
+            <div id="game-output-card" class="hidden bg-white border-2 border-violet-200 p-5 rounded-3xl shadow-sm animate-fadeIn">
+                <div class="flex justify-between items-center border-b border-[#F3EDE2] pb-2 mb-3">
+                    <strong class="text-xs text-violet-600 font-black">🔮 요정의 마법 보따리 놀이기획 카드</strong>
+                    <button onclick="copyGameResult()" class="text-3xs bg-[#FCF6F0] border border-[#F0E4D2] px-2 py-1 rounded-lg hover:bg-violet-100 text-[#4A3E3D] font-bold bouncy-hover">설명서 복사</button>
+                </div>
+                <div id="game-result-body" class="text-xs text-[#7A645A] leading-relaxed whitespace-pre-wrap font-medium"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- STREAMING_CHUNK: Initializing state, event handlers, and Gemini API integration... -->
+    <!-- CUTE FOOTER -->
+    <footer class="text-center text-stone-400 text-3xs py-10 mt-16 border-t-2 border-[#F0E4D2]">
+        <p class="mb-1">🍯 JJ Company 2박 3일 M.T. Dashboard © 2026</p>
+        <p>Created with Cozy & Soft Pastellish Design Tokens for True Cozy Friends M.T. 🧸🍼</p>
+    </footer>
+
+    <!-- APP SCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // STATE STORAGE & GLOBAL DECLARATIONS
+        // ==========================================
+        const appId = 'jj-company-mt-2026-dynamic';
+
+        // Checklist raw items
+        let checklistData = [
+            { id: 1, text: "민증 및 운전면허증 (베스트 드라이버 수호용 💳)", category: "필수", checked: false },
+            { id: 2, text: "치카포카 세면도구 (칫솔, 치약, 클렌징폼 🪥)", category: "개인", checked: false },
+            { id: 3, text: "인생샷 건질 이쁜 여벌 옷 & 홈웨어 편한 옷 👕", category: "개인", checked: false },
+            { id: 4, text: "스마트폰 충전 케이블 & 든든한 보조 배터리 🔋", category: "개인", checked: false },
+            { id: 5, text: "개인 상비약 (혹시 모를 소화제, 대일밴드 🩹)", category: "개인", checked: false },
+            { id: 6, text: "바베큐용 비밀무기 허브솔트 & 달콤 쌈장 🧂", category: "마트", checked: false },
+            { id: 7, text: "야외 벌레를 막을 모기 기피제 및 아기자기 버물리 🦟", category: "기타", checked: false },
+            { id: 8, text: "차안과 바비큐 테이블을 평정할 물티슈 🧼", category: "마트", checked: false },
+            { id: 9, text: "새벽 대환장을 몰고 올 꿀잼 보드게임 🃏", category: "기타", checked: false },
+            { id: 10, text: "BGM을 풍성하게 메워줄 블루투스 스피커 📻", category: "기타", checked: false }
+        ];
+
+        // BBQ config state
+        let configPeople = 4;
+        let configAppetite = 'normal';
+        let configAlcohol = 'mild';
+
+        // Local storage loader
+        function loadChecklist() {
+            const saved = localStorage.getItem(`${appId}-checklist`);
+            if (saved) {
+                checklistData = JSON.parse(saved);
+            }
+        }
+
+        function saveChecklist() {
+            localStorage.setItem(`${appId}-checklist`, JSON.stringify(checklistData));
+        }
+
+        // ==========================================
+        // NAVIGATOR TAB SYSTEM
+        // ==========================================
+        function switchTab(tabId) {
+            // Hide all panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            // Show target panel
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+
+            // Set inactive tab style
+            const tabs = ['day1', 'day2', 'day3', 'checklist', 'bbq', 'ai'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-${t}`);
+                if (btn) {
+                    if (t === 'ai') {
+                        btn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-violet-500 hover:bg-violet-100/50";
+                    } else {
+                        btn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]";
+                    }
+                }
+            });
+
+            // Set active tab style
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                if (tabId === 'ai') {
+                    activeBtn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-violet-400 text-white shadow-md transform scale-102";
+                } else if (tabId === 'checklist') {
+                    activeBtn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#B5E2FA] text-[#3D525C] shadow-md transform scale-102";
+                } else if (tabId === 'bbq') {
+                    activeBtn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#FFE5A3] text-[#7D5A50] shadow-md transform scale-102";
+                } else {
+                    activeBtn.className = "flex-1 min-w-[95px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#FFB4A2] text-white shadow-md transform scale-102";
+                }
+            }
+        }
+
+        // ==========================================
+        // CHECKLIST RENDERING & ACTIONS
+        // ==========================================
+        function renderChecklist() {
+            const grid = document.getElementById('checklist-grid');
+            grid.innerHTML = '';
+
+            const categories = ['필수', '개인', '마트', '기타'];
+            categories.forEach(cat => {
+                const items = checklistData.filter(i => i.category === cat);
+                
+                let html = `
+                    <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col shadow-sm">
+                        <h3 class="text-xs font-black text-[#8D6E63] border-b-2 border-[#FCF6F0] pb-2.5 mb-3 flex justify-between items-center uppercase">
+                            <span>🏷️ ${cat} 소품함</span>
+                            <span class="text-[10px] bg-[#FFF0E8] px-2 py-0.5 rounded-full text-[#E76F51] font-bold">${items.length}개</span>
+                        </h3>
+                        <div class="space-y-2 flex-1">
+                `;
+
+                if (items.length === 0) {
+                    html += `<p class="text-stone-300 text-3xs py-5 text-center">비어 있음 🧁</p>`;
+                } else {
+                    items.forEach(item => {
+                        html += `
+                            <div class="flex items-center justify-between p-2.5 rounded-xl border-2 transition-all duration-200 ${item.checked ? 'bg-[#FCFBF7] border-[#F5E1D3]/40 text-stone-300 line-through' : 'bg-white border-[#FCF6F0] text-[#4A3E3D] hover:border-[#FFCDB2]'}">
+                                <label class="flex items-center gap-2.5 cursor-pointer select-none flex-1 font-medium">
+                                    <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleItem(${item.id})" class="w-4.5 h-4.5 rounded-full text-[#FFB4A2] bg-white border-2 border-[#EBE3D5] focus:ring-[#FFB4A2] focus:ring-offset-white cursor-pointer transition-all">
+                                    <span class="text-3xs md:text-2xs leading-snug">${item.text}</span>
+                                </label>
+                                <button onclick="deleteItem(${item.id})" class="text-stone-300 hover:text-red-400 text-3xs p-1 rounded-lg transition-colors">✕</button>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += html;
+            });
+
+            // Update progress bar
+            const total = checklistData.length;
+            const checked = checklistData.filter(i => i.checked).length;
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            
+            document.getElementById('pack-percent').innerText = `${percent}% (${checked}/${total}개 패킹완료)`;
+            document.getElementById('pack-progress').style.width = `${percent}%`;
+        }
+
+        function toggleItem(id) {
+            checklistData = checklistData.map(item => item.id === id ? { ...item, checked: !item.checked } : item);
+            saveChecklist();
+            renderChecklist();
+        }
+
+        function deleteItem(id) {
+            checklistData = checklistData.filter(item => item.id !== id);
+            saveChecklist();
+            renderChecklist();
+        }
+
+        // Add custom checklist item
+        document.getElementById('add-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = document.getElementById('custom-item-text').value.trim();
+            const category = document.getElementById('custom-item-cat').value;
+            
+            if (text) {
+                const newItem = {
+                    id: Date.now(),
+                    text: text,
+                    category: category,
+                    checked: false
+                };
+                checklistData.push(newItem);
+                saveChecklist();
+                renderChecklist();
+                document.getElementById('custom-item-text').value = '';
+            }
+        });
+
+        // Copy checklist data
+        function copyChecklist() {
+            const unchecked = checklistData.filter(i => !i.checked).map(i => `[ ] ${i.text}`).join('\n');
+            const checked = checklistData.filter(i => i.checked).map(i => `[v] ${i.text}`).join('\n');
+            
+            const message = `🧸 === JJ Company M.T. 가방 준비물 === 🧸\n\n[아직 덜 챙겼어요 🥺]\n${unchecked || '모두 완벽 준비!'}\n\n[다 챙겼어요! 😎]\n${checked || '없음'}`;
+            
+            const temp = document.createElement('textarea');
+            temp.value = message;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                alert("체크리스트가 클립보드에 아기자기하게 복사되었어요! 어서 카톡방에 올려 짐을 맞춰보아요! 💕");
+            } catch (err) {
+                alert("복사 실패 ㅠㅠ");
+            }
+            document.body.removeChild(temp);
+        }
+
+        // ==========================================
+        // BBQ CALCULATOR LOGIC
+        // ==========================================
+        function changePeople(val) {
+            configPeople = Math.max(1, configPeople + val);
+            document.getElementById('bbq-people-num').innerText = `${configPeople}명`;
+            runBbqCalculations();
+        }
+
+        function setAppetite(type) {
+            configAppetite = type;
+            const buttons = ['light', 'normal', 'heavy'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`btn-app-${b}`);
+                if (b === type) {
+                    btn.className = "py-2 text-[10px] font-bold rounded-lg bg-[#16A085] text-white shadow-sm";
+                } else {
+                    btn.className = "py-2 text-[10px] font-bold rounded-lg text-stone-500 hover:text-stone-800";
+                }
+            });
+            runBbqCalculations();
+        }
+
+        function setAlcohol(type) {
+            configAlcohol = type;
+            const buttons = ['none', 'mild', 'heavy'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`btn-alc-${b}`);
+                if (b === type) {
+                    btn.className = "py-2 text-[10px] font-bold rounded-lg bg-violet-400 text-white shadow-sm";
+                } else {
+                    btn.className = "py-2 text-[10px] font-bold rounded-lg text-stone-500 hover:text-stone-800";
+                }
+            });
+            runBbqCalculations();
+        }
+
+        function runBbqCalculations() {
+            let mult = 300;
+            if (configAppetite === 'light') mult = 200;
+            if (configAppetite === 'heavy') mult = 400;
+
+            const totalMeat = configPeople * mult;
+            const pork = Math.round(totalMeat * 0.7);
+            const beef = Math.round(totalMeat * 0.3);
+
+            document.getElementById('out-total-meat').innerText = `${(totalMeat / 1000).toFixed(1)} kg`;
+            document.getElementById('out-pork').innerText = `${pork} g`;
+            document.getElementById('out-beef').innerText = `${beef} g`;
+
+            let drinksStr = "달달 무알콜 탄산/과일주스 가득 🍋";
+            if (configAlcohol === 'mild') {
+                drinksStr = `🍾 소주 ${Math.round(configPeople * 1)}병 + 🍺 맥주 ${Math.round(configPeople * 1.5)}캔`;
+            } else if (configAlcohol === 'heavy') {
+                drinksStr = `🍾 소주 ${Math.round(configPeople * 2)}병 + 🍺 맥주 ${Math.round(configPeople * 3)}캔`;
+            }
+            document.getElementById('out-drinks').innerText = drinksStr;
+
+            document.getElementById('out-water').innerText = `${(configPeople * 1.5).toFixed(1)} 리터`;
+            document.getElementById('out-ramyeon').innerText = `${Math.round(configPeople * 1.2)} 봉지`;
+            document.getElementById('out-rice').innerText = `${Math.round(configPeople * 1.2)} 개입`;
+            document.getElementById('out-kimchi').innerText = `${configPeople * 100} g`;
+        }
+
+        // ==========================================
+        // AI CHATBOT & GAME GENERATOR (GEMINI API)
+        // ==========================================
+        let chatHistory = [
+            { role: 'assistant', text: "반갑습니다! JJ Company M.T. 전담 AI 비서입니다. 익산-군산-태안 2박 3일 여정에 대해 궁금한 점이나 현지 날씨 대응법, 추천 여행지 등 무엇이든 물어보세요! 아래 빠른 템플릿 질문도 준비되어 있습니다. 🗺️✨" }
+        ];
+
+        async function triggerGeminiCall(promptText, systemText = "") {
+            const typedKey = document.getElementById('api-key-input').value.trim();
+            const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${typedKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: promptText }] }]
+            };
+            if (systemText) {
+                payload.systemInstruction = {
+                    parts: [{ text: systemText }]
+                };
+            }
+
+            const response = await fetch(targetUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error("Gemini 호출 실패");
+            }
+            return await response.json();
+        }
+
+        // Send chat message
+        document.getElementById('chat-input-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('chat-box-text');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            inputEl.value = '';
+            await processChatMessage(text);
+        });
+
+        async function sendQuickQuery(queryText) {
+            await processChatMessage(queryText);
+        }
+
+        async function processChatMessage(text) {
+            const chatBox = document.getElementById('chat-messages');
+            
+            // Append User Message
+            chatBox.innerHTML += `
+                <div class="flex flex-col items-end max-w-[85%] ml-auto">
+                    <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">You 👩‍🚀</span>
+                    <div class="bg-[#FFB4A2] text-white text-xs p-3 rounded-2xl rounded-tr-none leading-relaxed shadow-sm">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Append Loader
+            const loaderId = `loader-${Date.now()}`;
+            chatBox.innerHTML += `
+                <div id="${loaderId}" class="flex flex-col items-start max-w-[85%]">
+                    <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">M.T. AI 비서 🧚‍♀️</span>
+                    <div class="bg-white border-2 border-[#F3EDE2] text-stone-400 p-3 rounded-2xl rounded-tl-none flex items-center gap-1.5 text-xs shadow-sm">
+                        <span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce"></span>
+                        <span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                        <span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        <span class="text-[10px] font-medium">안면도 물때 지도 그리는 중...</span>
+                    </div>
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const systemInstruction = `
+                너는 'JJ Company' 친구들의 친목 2박 3일 M.T.(멤버십 트레이닝) 전용 귀여운 AI 비서 요정이야.
+                아주 아기자기하고 러블리한 존댓말(~했답니다 체, 이모티콘 듬뿍!)을 적극 구사하며, 일정에 특화된 정보를 가르쳐줘.
+                우리의 세부 일정표:
+                - 1일차(7/10): 10:30 출발 -> 12:50 본향 익산 점심(서동선화 예약 완료!) -> 14:00 카페 휴식(미정, 추천: 한옥 단향) -> 15:00 금마전통시장/하나로마트 장보기 -> 16:00 고도한옥 1985 숙소 체크인 -> 18:00 요리대회 저녁
+                - 2일차(7/11): 11:00 체크아웃 -> 12:00 익산역 정차 -> 13:00 군산 점심(미정, 추천: 한일옥 소고기무국) -> 14:30 이성당 빵지순례 -> 15:30 새만금방조제 드라이브 & 선유도 해변 낙조 -> 17:00 안면도 아일랜드 리솜 입실 -> 18:30 낭만 바베큐 파티
+                - 3일차(7/12): 10:00 모닝라면 해장 -> 11:00 아일랜드 리솜 체크아웃 -> 11:30 오션뷰 카페 여유 -> 13:00 게국지 로컬 맛집 점심 -> 14:30 해산 안전귀가
+                
+                이 여정과 연관된 질문에 정성껏 귀엽게 답변해줘. 만약 사용자가 API 키를 입력하지 않아 에러가 나면 "API 키를 마법 스톤에 쏙 넣어 가동해주세요!" 하고 위트 있게 돌려말해줘.
+            `;
+
+            try {
+                const data = await triggerGeminiCall(text, systemInstruction);
+                const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "아쉽게도 마법 요정이 응답을 잊어버렸어요..!";
+                
+                document.getElementById(loaderId).remove();
+                chatBox.innerHTML += `
+                    <div class="flex flex-col items-start max-w-[85%]">
+                        <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">M.T. AI 비서 🧚‍♀️</span>
+                        <div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none leading-relaxed shadow-sm">
+                            ${replyText}
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                document.getElementById(loaderId).remove();
+                chatBox.innerHTML += `
+                    <div class="flex flex-col items-start max-w-[85%]">
+                        <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">M.T. AI 비서 🧚‍♀️</span>
+                        <div class="bg-rose-50 border-2 border-rose-100 text-xs text-rose-700 p-3 rounded-2xl rounded-tl-none leading-relaxed shadow-sm">
+                            앗! 마법 통신 요정이 잠시 졸고 있나 봐요! 🥺<br>
+                            혹시 API Key가 비어 있다면 상단의 <strong>[Gemini 마법 스톤 장착]</strong> 란에 개인 API 키를 입력해 주세요. 무료로 즉시 연동되어 놀라운 상담을 이어나갈 수 있답니다! 💖
+                        </div>
+                    </div>
+                `;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Reset chat screen
+        function resetChat() {
+            document.getElementById('chat-messages').innerHTML = `
+                <div class="flex flex-col items-start max-w-[85%]">
+                    <span class="text-[9px] text-stone-400 mb-0.5 font-bold uppercase tracking-wider">M.T. AI 비서 🧚‍♀️</span>
+                    <div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none leading-relaxed shadow-sm">
+                        기억 구슬을 새롭게 씻어냈어요! 새로운 수다를 나눌 준비 완료! 🧸✨
+                    </div>
+                </div>
+            `;
+        }
+
+        // Rec game generator trigger
+        async function triggerGameGenerator() {
+            const v = document.getElementById('game-vibe-select').value;
+            const t = document.getElementById('game-time-select').value;
+            
+            const btn = document.getElementById('btn-generate-game');
+            const origText = btn.innerText;
+            btn.innerText = "🔮 기막힌 벌칙과 놀이 조제 중...";
+            btn.disabled = true;
+
+            const query = `
+                우리는 총 ${configPeople}명이 모여 가는 JJ Company 엠티야.
+                - 놀이 성격: ${v === 'drinking' ? '초집중 텐션 폭발 술자리 게임' : v === 'brain' ? '한옥 마루에 조용히 앉아 벌이는 두뇌 연상 추리물' : v === 'physical' ? '온몸을 흔들어 표현하는 댄싱 및 피지컬 대결' : '초반 어색함을 눈 녹듯 없애줄 아이스브레이커'}
+                - 플레이 타임: ${t === 'short' ? '10분 내에 짜릿하고 스피디한 단기전' : t === 'mid' ? '20분~30분 가량 꼬리에 꼬리를 무는 승부' : '1시간 짜리 거대 메인 세션'}
+
+                다음 형식으로 친구들과 포복절도하며 놀 수 있는 완벽한 신규 게임 기획서 1개를 제작해줘:
+                1. [게임 명] (아주 톡톡 튀고 재미난 타이틀)
+                2. [한줄 요약 및 최적 상황]
+                3. [간단한 준비물]
+                4. [쉽고 귀여운 룰 설명 (1, 2, 3...)]
+                5. [웃음 터지는 벌칙/상품 아이디어]
+                6. [마스터를 위한 꿀팁]
+            `;
+
+            try {
+                const data = await triggerGeminiCall(query, "너는 세상에서 가장 흥부자이자 예능감이 미쳐버린 스타 레크레이션 강사 요정이야.");
+                const outText = data.candidates?.[0]?.content?.parts?.[0]?.text || "아쉽게도 놀이 설명서를 연성하지 못했어요 힝..";
+                
+                document.getElementById('game-result-body').innerText = outText;
+                document.getElementById('game-output-card').classList.remove('hidden');
+                document.getElementById('game-output-card').scrollIntoView({ behavior: 'smooth' });
+            } catch (err) {
+                alert("앗! 게임을 만들기 위해서는 상단에 [Gemini 마법 스톤 API Key]를 장착해 주세요! 🔮");
+            } finally {
+                btn.innerText = origText;
+                btn.disabled = false;
+            }
+        }
+
+        function copyGameResult() {
+            const txt = document.getElementById('game-result-body').innerText;
+            const temp = document.createElement('textarea');
+            temp.value = txt;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                alert("레크레이션 기획안 카드가 다이어리에 복사되었습니다! 🎮");
+            } catch (e) {
+                alert("복사 실패 ㅠ_ㅠ");
+            }
+            document.body.removeChild(temp);
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        window.onload = function() {
+            // Set default tab
+            switchTab('day1');
+            
+            // Load checklist and paint
+            loadChecklist();
+            renderChecklist();
+            
+            // Set default BBQ configurations
+            setAppetite('normal');
+            setAlcohol('mild');
+            runBbqCalculations();
+        };
+    </script>
+</body>
+</html>
+```eof
+
+위 단일 HTML 파일은 친구들과의 **2박 3일 JJ Company M.T. 일정**을 고스란히 담아냈을 뿐만 아니라, 아래의 세심한 디테일이 보완되었습니다.
+
+### 💖 수정 및 업그레이드 특징:
+1. **아기자기한 파스텔 감성 컬러링:** 기존의 딱딱하고 밋밋한 공대생 톤의 파란색 대신, 웜 샌드베이지, 피치코랄, 크림핑크, 소프트 라벤더와 같은 따뜻하고 풍성한 파스텔 컬러셋을 조화롭게 배치하여 여행 플래너 다이어리를 펼친 것 같은 느낌을 줍니다.
+2. **실시간 데이터 바인딩:** 4인 및 다양한 인원에 최적화된 마트 정육/주류 계산 결과가 클릭 시마다 완벽하게 작동하여 한눈에 장보기 영수증을 확인할 수 있습니다.
+3. **영구 소장 및 더블클릭 실행 가능:** 복잡한 빌드 과정이나 도구 없이, 이 파일 전체를 브라우저 창에 드래그하여 열기만 하면 모든 인터랙티브 기능과 AI 모듈이 살아 움직입니다.
+
+친구분들과 편안하게 상의하며 기분 좋은 M.T. 준비를 이어가 보세요! 또 조정하고 싶은 부분이 있다면 언제든 알려주세요.
