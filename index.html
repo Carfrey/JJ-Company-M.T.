@@ -37,11 +37,33 @@
         .bouncy-hover:active {
             transform: translateY(1px) scale(0.98);
         }
+        /* Rotation animation for BGM playing state */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .record-spin {
+            animation: spin 6s linear infinite;
+        }
     </style>
 </head>
 <body class="selection:bg-[#FFD1D1] selection:text-[#803E3D] min-h-screen pb-16 relative">
 
-    <!-- CUTE NOTIFICATION TOAST POPUP (Using safe custom UI messaging, NO alert) -->
+    <!-- AUDIO ELEMENT FOR BGM -->
+    <audio id="bgm-player" src="happiness.mp3" loop></audio>
+
+    <!-- FLOATING CUTE BGM CONTROLLER -->
+    <div id="bgm-container" class="fixed bottom-6 left-6 z-50 bg-white/90 backdrop-blur-md border-2 border-[#FFCDB2] px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 bouncy-hover">
+        <button id="bgm-toggle" onclick="toggleBgm()" class="w-10 h-10 rounded-full bg-[#FFE5A3] flex items-center justify-center text-lg border-2 border-white shadow-inner relative overflow-hidden">
+            <span id="record-icon" class="text-xl inline-block">💿</span>
+        </button>
+        <div class="flex flex-col select-none pr-1">
+            <span class="text-[9px] font-extrabold text-[#E76F51] uppercase tracking-wider">Background Music</span>
+            <span class="text-2xs font-extrabold text-[#7D5A50] truncate max-w-[110px]" id="bgm-title">Happiness 🌸</span>
+        </div>
+    </div>
+
+    <!-- CUTE NOTIFICATION TOAST POPUP -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#FF9E80] to-[#FF80AB] text-white text-xs md:text-sm font-bold px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 border-2 border-white transition-all duration-300 transform translate-y-10 opacity-0 hidden">
       <span>🧸</span>
       <p id="toast-message"></p>
@@ -151,10 +173,7 @@
                             <span class="text-3xs font-bold text-amber-500 bg-[#FFFBEB] px-2 py-0.5 rounded-full">전시관</span>
                         </div>
                         <h4 class="text-sm font-bold text-[#4A3E3D]">💎 익산보석박물관 관람</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">
-                            보석의 도시 익산의 상징적인 랜드마크!<br>
-                            진귀한 보석 원석들과 화려한 조형물들을 쾌적한 실내 전시관에서 감상합니다.
-                        </p>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">보석의 도시 익산의 상징적인 랜드마크! 진귀한 보석 원석들과 화려한 조형물들을 쾌적한 실내 전시관에서 감상합니다.</p>
                         <div class="mt-2.5 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-2.5 text-3xs text-[#8D6E63] leading-relaxed">
                             <strong>🗺️ 구글맵 동선 노트:</strong> 본향 식당에서 왕궁면의 보석박물관까지는 차량으로 약 5분 정도 걸리는 최적의 초인접 코스입니다.
                         </div>
@@ -202,10 +221,7 @@
                             <span class="text-3xs font-bold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">🔥 중앙시장 탐방 🔥</span>
                         </div>
                         <h4 class="text-sm font-bold text-[#4A3E3D]">🛍️ 익산 중앙시장 ➔ 바베큐 & 야식 획득 코스</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">
-                            전통이 고스란히 살아 숨 쉬는 익산 시내의 **중앙시장**을 둘러보며,<br>
-                            첫날 밤 한옥에서 만들어 먹을 바베큐 고기(삼겹살 등)와 신선한 채소, 그리고 밤에 먹을 군침 도는 야식거리들을 골고루 쇼핑합니다.
-                        </p>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">전통이 고스란히 살아 숨 쉬는 익산 시내의 **중앙시장**을 둘러보며, 첫날 밤 한옥에서 만들어 먹을 바베큐 고기(삼겹살 등)와 신선한 채소, 그리고 밤에 먹을 군침 도는 야식거리들을 골고루 쇼핑합니다.</p>
                         <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-850 leading-relaxed">
                             <strong>🗺️ 구글맵 동선 및 이동 팁:</strong><br>
                             미륵사지에서 남쪽 중앙시장까지는 차로 약 20분 소요됩니다. 시장에서 푸짐하게 장을 본 후, 숙소인 금마면의 '고도한옥 1985'까지는 차량으로 다시 약 18분 정도 걸려 도착하게 됩니다.
@@ -356,7 +372,7 @@
                     <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                             <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 21:30</span>
-                            <span class="text-3xs font-bold text-violet-500 bg-violet-50 px-2 py-0.5 rounded-full">야식 포장 룸파티 🍿</span>
+                            <span class="text-3xs font-bold text-violet-500 bg-violet-50 px-2 py-0.5 rounded-full">야식 포장 🍿</span>
                         </div>
                         <h4 class="text-sm font-bold text-[#4A3E3D]">🍺 리조트 내부 한신포차 또는 BBQ 치킨 야식 포장 룸파티</h4>
                         <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">바깥 바람이 선선해지면 아일랜드 리솜 리조트 안에 매끄럽게 입점해 있는 **한신포차**의 매콤한 안주류나 **BBQ 치킨** 매장에서 바삭한 치킨을 테이크아웃해 객실 안으로 가져옵니다. 다 함께 모여 새벽까지 편안한 룸파티를 이어가며 둘째 날 밤을 환상적으로 마무리합니다.</p>
@@ -384,7 +400,7 @@
                 <!-- Breakfast -->
                 <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
                     <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 10:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🍜 상쾌한 모닝 속풀이 해장</h4>
+                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🍜 모닝 해장 타임</h4>
                     <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">시원한 바다 파도 소리를 들으며 전날 밤 쌓인 숙취를 날려줄 개운한 라면 브런치로 상쾌하게 시작합니다.</p>
                 </div>
 
@@ -606,6 +622,20 @@
         let configAppetite = 'normal';
         let configAlcohol = 'mild';
 
+        // Checklist raw items
+        let checklistData = [
+            { id: 1, text: "민증 및 운전면허증 (베스트 드라이버 수호용 💳)", category: "필수", checked: false },
+            { id: 2, text: "치카포카 세면도구 (칫솔, 치약, 귀여운 폼클렌징 🪥)", category: "개인", checked: false },
+            { id: 3, text: "인생샷 건질 여벌 옷 & 편한 홈웨어 트레이닝복 👕", category: "개인", checked: false },
+            { id: 4, text: "스마트폰 충전 케이블 & 든든한 보조 배터리 🔋", category: "개인", checked: false },
+            { id: 5, text: "개인 상비약 (혹시 모를 소화제, 밴드, 대일밴드 🩹)", category: "개인", checked: false },
+            { id: 6, text: "바베큐용 비밀 무기 허브솔트 & 감칠맛 쌈장 🧂", category: "마트", checked: false },
+            { id: 7, text: "야외 벌레 쫓아낼 모기 기피제 및 아기자기한 버물리 🦟", category: "기타", checked: false },
+            { id: 8, text: "차안과 바비큐장을 지켜줄 도톰한 물티슈 🧼", category: "마트", checked: false },
+            { id: 9, text: "우리의 새벽을 뜨겁게 달궈줄 보드게임 & 카드게임 🃏", category: "기타", checked: false },
+            { id: 10, text: "BGM을 풍성하게 메워줄 빵빵한 블루투스 스피커 📻", category: "기타", checked: false }
+        ];
+
         // Toast Helper
         function triggerToast(message) {
             const toast = document.getElementById('toast');
@@ -628,14 +658,26 @@
             }, 3000);
         }
 
-        // TAB SYSTEM (Simplified with checklist removed)
+        // Local storage loader
+        function loadChecklist() {
+            const saved = localStorage.getItem('jj-company-mt-2026-checklist-vanilla');
+            if (saved) {
+                checklistData = JSON.parse(saved);
+            }
+        }
+
+        function saveChecklist() {
+            localStorage.setItem('jj-company-mt-2026-checklist-vanilla', JSON.stringify(checklistData));
+        }
+
+        // TAB SYSTEM
         function switchTab(tabId) {
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.add('hidden');
             });
             document.getElementById(`panel-${tabId}`).classList.remove('hidden');
 
-            const tabs = ['day1', 'day2', 'day3', 'bbq', 'ai'];
+            const tabs = ['day1', 'day2', 'day3', 'checklist', 'bbq', 'ai'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
                 if (btn) {
@@ -651,12 +693,110 @@
             if (activeBtn) {
                 if (tabId === 'ai') {
                     activeBtn.className = "tab-btn flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-violet-400 text-white shadow-md transform scale-102";
+                } else if (tabId === 'checklist') {
+                    activeBtn.className = "tab-btn flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#B5E2FA] text-[#3D525C] shadow-md transform scale-102";
                 } else if (tabId === 'bbq') {
                     activeBtn.className = "tab-btn flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#FFE5A3] text-[#7D5A50] shadow-md transform scale-102";
                 } else {
                     activeBtn.className = "tab-btn flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#FFB4A2] text-white shadow-md transform scale-102";
                 }
             }
+        }
+
+        // CHECKLIST RENDERING & ACTIONS
+        function renderChecklist() {
+            const grid = document.getElementById('checklist-grid');
+            grid.innerHTML = '';
+
+            const categories = ['필수', '개인', '마트', '기타'];
+            categories.forEach(cat => {
+                const items = checklistData.filter(i => i.category === cat);
+                let html = `
+                    <div class="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col shadow-sm">
+                        <h3 class="text-xs font-black text-[#8D6E63] border-b-2 border-[#FCF6F0] pb-2.5 mb-3 flex justify-between items-center uppercase">
+                            <span>🏷️ ${cat === '필수' ? '🚨 필수' : cat === '개인' ? '🎒 개인' : cat === '마트' ? '🛒 마트' : '🎪 기타'} 소품함</span>
+                            <span class="text-[10px] bg-[#FFF0E8] px-2 py-0.5 rounded-full text-[#E76F51] font-bold">${items.length}개</span>
+                        </h3>
+                        <div class="space-y-2 flex-1">
+                `;
+
+                if (items.length === 0) {
+                    html += `<p class="text-stone-300 text-3xs py-5 text-center">비어 있음 🧁</p>`;
+                } else {
+                    items.forEach(item => {
+                        html += `
+                            <div class="flex items-center justify-between p-2.5 rounded-xl border-2 transition-all duration-200 ${item.checked ? 'bg-[#FCFBF7] border-[#F5E1D3]/40 text-stone-300 line-through' : 'bg-white border-[#FCF6F0] text-[#4A3E3D] hover:border-[#FFCDB2]'}">
+                                <label class="flex items-center gap-2.5 cursor-pointer select-none flex-1 font-medium">
+                                    <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleItem(${item.id})" class="w-4.5 h-4.5 rounded-full text-[#FFB4A2] bg-white border-2 border-[#EBE3D5] focus:ring-[#FFB4A2] focus:ring-offset-white cursor-pointer transition-all">
+                                    <span class="text-3xs md:text-2xs leading-snug">${item.text}</span>
+                                </label>
+                                <button onclick="deleteItem(${item.id})" class="text-stone-300 hover:text-red-400 text-3xs p-1 rounded-lg transition-colors">✕</button>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `</div></div>`;
+                grid.innerHTML += html;
+            });
+
+            const total = checklistData.length;
+            const checked = checklistData.filter(i => i.checked).length;
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            
+            document.getElementById('pack-percent').innerText = `${percent}% (${checked}/${total}개 패킹완료)`;
+            document.getElementById('pack-progress').style.width = `${percent}%`;
+        }
+
+        function toggleItem(id) {
+            checklistData = checklistData.map(item => item.id === id ? { ...item, checked: !item.checked } : item);
+            saveChecklist();
+            renderChecklist();
+        }
+
+        function deleteItem(id) {
+            checklistData = checklistData.filter(item => item.id !== id);
+            saveChecklist();
+            renderChecklist();
+        }
+
+        document.getElementById('add-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = document.getElementById('custom-item-text').value.trim();
+            const category = document.getElementById('custom-item-cat').value;
+            
+            if (text) {
+                const newItem = {
+                    id: Date.now(),
+                    text: text,
+                    category: category,
+                    checked: false
+                };
+                checklistData.push(newItem);
+                saveChecklist();
+                renderChecklist();
+                document.getElementById('custom-item-text').value = '';
+                triggerToast("체크박스 소품 상자에 아이템이 쏙 들어갔어요! 🎒");
+            }
+        });
+
+        function copyChecklist() {
+            const unchecked = checklistData.filter(i => !i.checked).map(i => `[ ] ${i.text}`).join('\n');
+            const checked = checklistData.filter(i => i.checked).map(i => `[v] ${i.text}`).join('\n');
+            
+            const message = `🧸 === JJ Company M.T. 가방 준비물 === 🧸\n\n[아직 덜 챙겼어요 🥺]\n${unchecked || '모두 완벽 준비!'}\n\n[다 챙겼어요! 😎]\n${checked || '없음'}`;
+            
+            const temp = document.createElement('textarea');
+            temp.value = message;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                triggerToast("체크리스트가 복사되었습니다! 카톡에 공유해 보세요! 💕");
+            } catch (err) {
+                triggerToast("복사 실패 ㅠㅠ");
+            }
+            document.body.removeChild(temp);
         }
 
         // BBQ CALCULATOR LOGIC
@@ -721,9 +861,7 @@
             document.getElementById('out-kimchi').innerText = `${configPeople * 100} g`;
         }
 
-        // ==========================================
-        // AI ASSISTANT HUB INTEGRATION
-        // ==========================================
+        // AI 챗봇 및 요정 기획자
         async function triggerGeminiCall(promptText, systemText) {
             const typedKey = document.getElementById('api-key-input').value.trim() || defaultApiKey;
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${typedKey}`;
@@ -797,6 +935,8 @@
 
         window.onload = function() { 
             switchTab('day1'); 
+            loadChecklist();
+            renderChecklist();
             runBbqCalculations();
         };
     </script>
