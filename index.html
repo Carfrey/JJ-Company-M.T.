@@ -1,570 +1,1087 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <!-- STREAMING_CHUNK: Setting up meta tags, stylesheets, and fonts... -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧸 JJ Company M.T. 스마트 다이어리</title>
-    <!-- Tailwind CSS & FontAwesome for cute icons -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts for cute rounded lettering -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:wght@400;700;900&family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+```react
+import React, { useState, useEffect, useRef } from 'react';
+
+// ==========================================
+// CONFIG & INITIAL DATA
+// ==========================================
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'jj-company-mt-2026';
+
+// 3일간의 전체 일정 상세 데이터
+const initialItinerary = {
+  day1: {
+    date: "7월 10일 (금)",
+    title: "🧸 1일차: 말랑말랑 한옥에서의 첫 걸음",
+    items: [
+      {
+        time: "10:30",
+        title: "🚗 각자 출발하기!",
+        desc: "지정된 루트 또는 개인 차량으로 설레는 마음을 안고 익산으로 출발~",
+        category: "이동",
+        badge: "자유 출발",
+        badgeColor: "bg-[#FFE5EC] text-[#FF4D6D]",
+        tips: "장거리 운전 전 차량 타이어와 오일 체크는 기본! 중간 휴게소에서 맛있는 소떡소떡 한 입 어때요?"
+      },
+      {
+        time: "12:50",
+        title: "🍱 점심 식사: 본향 익산",
+        desc: "고풍스러운 분위기에서 맛보는 향토적인 '서동선화' 마 한정식 코스 요리",
+        category: "식사",
+        badge: "예약 완료 🍀",
+        badgeColor: "bg-[#E2F0D9] text-[#386641]",
+        tips: "단체 예약 시간(12:50)에 늦지 않도록 최소 10분 전 매장 앞으로 모여주세요!"
+      },
+      {
+        time: "14:00",
+        title: "☕ 근처 감성 카페 휴식",
+        desc: "식사 후 도란도란 모여 앉아 커피 한 잔 마시며 가벼운 워크숍 수다 떨기",
+        category: "휴식",
+        badge: "AI 추천스팟",
+        badgeColor: "bg-[#E8DFF5] text-[#7A5C9E]",
+        tips: "소담하고 조용한 전통 정원이 펼쳐진 '단향' 카페를 제안해요. 시그니처 전통차와 약과가 훌륭해요!"
+      },
+      {
+        time: "15:00",
+        title: "🛒 M.T. 장보기 타임 (전통시장 & 마트)",
+        desc: "익산의 정겨운 금마전통시장 구경 및 근처 하나로마트에서 맛있는 간식과 야간 안주 털기",
+        category: "장보기",
+        badge: "장바구니 쏙",
+        badgeColor: "bg-[#FFF0E5] text-[#E76F51]",
+        tips: "전통시장에서는 갓 구운 김이나 신선한 로컬 야채, 과일을 저렴하게 득템할 수 있어요!"
+      },
+      {
+        time: "16:00",
+        title: "🏡 숙소 입실: 고도한옥 1985",
+        desc: "익산의 고즈넉한 정취를 품은 독채 한옥 숙소 입실 및 침구 배정 복불복!",
+        category: "숙소",
+        badge: "따뜻한 한옥",
+        badgeColor: "bg-[#F4E3B1] text-[#8B5E34]",
+        tips: "독채 마당에서 한옥을 배경으로 인생 최고 꼬질이/꾸밈 샷 단체 사진 찍어봐요!"
+      },
+      {
+        time: "18:00",
+        title: "🍳 오순도순 저녁 요리 & 친목 밤",
+        desc: "역할을 나눠 준비한 재료로 따뜻하고 맛있는 한옥 홈메이드 식사 만들기",
+        category: "액티비티",
+        badge: "꿀잼 보장 밤",
+        badgeColor: "bg-[#FFCCD5] text-[#C9184A]",
+        tips: "빔프로젝터를 켜서 감성 영화를 보거나, 가져온 보드게임으로 가벼운 벌칙 야식 사기 내기를 추천해요!"
+      }
+    ]
+  },
+  day2: {
+    date: "7월 11일 (토)",
+    title: "🌊 2일차: 군산 감성 산책과 해질녘 드라이브",
+    items: [
+      {
+        time: "11:00",
+        title: "👋 정든 고도한옥 체크아웃",
+        desc: "추억이 가득 쌓인 한옥 숙소 정돈 및 분리수거 완료하고 군산으로 고고싱!",
+        category: "이동",
+        badge: "체크아웃",
+        badgeColor: "bg-[#ECE2D0] text-[#7D6B58]",
+        tips: "베개 속에 개인 에어팟이나 충전기를 두고 내리지 않았는지 구석구석 살피기!"
+      },
+      {
+        time: "12:00",
+        title: "🚉 익산역 경유",
+        desc: "추가로 합류할 소중한 멤버 픽업 및 군산 이동 경로 네비 확인",
+        category: "이동",
+        badge: "합류 경유지",
+        badgeColor: "bg-[#D8F3DC] text-[#1B4332]",
+        tips: "잠깐 정차해야 하니 안전한 비상등 공간을 신속히 캐치해요!"
+      },
+      {
+        time: "13:00",
+        title: "🍛 군산에서의 든든한 점심",
+        desc: "아기자기한 근대 역사 거리가 반겨주는 군산 최고의 밥집 찾기",
+        category: "식사",
+        badge: "AI 강력추천",
+        badgeColor: "bg-[#E8DFF5] text-[#7A5C9E]",
+        tips: "따끈하고 개운함이 예술인 소고기무국의 성지 '한일옥'을 제안해요! 줄이 매우 기니 테이블링 원격 줄서기는 필수!"
+      },
+      {
+        time: "14:30",
+        title: "🥖 대한민국 최초 빵집 이성당",
+        desc: "역사와 전통이 살아 숨 쉬는 달콤한 단팥빵과 야채빵 빵지순례하기",
+        category: "관광",
+        badge: "빵순빵돌 필수",
+        badgeColor: "bg-[#FFE8A3] text-[#A66C00]",
+        tips: "야채빵/단팥빵 줄은 엄청 길 수 있지만, 일반 빵 라인은 바로 입장이 가능해 꿀이에요!"
+      },
+      {
+        time: "15:30",
+        title: "🏝 선유도 해변 & 새만금 드라이브",
+        desc: "양옆으로 푸른 바다가 펼쳐지는 끝없는 도로를 달리고 고운 모래사장 걷기",
+        category: "관광",
+        badge: "가슴 뻥 드라이브",
+        badgeColor: "bg-[#D8F3DC] text-[#2D6A4F]",
+        tips: "방조제를 지날 때 창문을 내리고, 모두가 미리 선곡한 떼창 발라드&댄스곡 볼륨 100%!"
+      },
+      {
+        time: "17:00",
+        title: "🏨 아일랜드 리솜 입실 (안면도)",
+        desc: "서해안 최고의 선셋을 방안과 테라스에서 볼 수 있는 바닷가 힐링 리조트 체크인",
+        category: "숙소",
+        badge: "서해안 1열 노을",
+        badgeColor: "bg-[#FFF0F5] text-[#FF6B6B]",
+        tips: "꽃지해수욕장의 랜드마크인 할미할아비바위 뒤로 저무는 노을 시간 맞춰 야외 산책 준비하기"
+      },
+      {
+        time: "18:30",
+        title: "🔥 M.T.의 꽃: 낭만 야외 바베큐 파티",
+        desc: "시원한 파도 소리를 들으며 맛있는 삼겹살, 버섯, 소시지 지글지글 굽기!",
+        category: "식사",
+        badge: "오늘의 메인⭐",
+        badgeColor: "bg-[#FFCCD5] text-[#D90429]",
+        tips: "야외에서 고기를 먹을 때를 위해 모기 기피제 스프레이를 사전에 꼼꼼히 뿌려둡시다!"
+      }
+    ]
+  },
+  day3: {
+    date: "7월 12일 (일)",
+    title: "🐚 3일차: 몽글몽글 바다 향과 집으로 가기 전 아쉬움 한 스푼",
+    items: [
+      {
+        time: "10:00",
+        title: "🍜 일어났나요? 모닝 해장 타임",
+        desc: "서해 파도를 보며 어젯밤 쌓인 술기운을 시원하게 날려줄 아침 라면 파티",
+        category: "식사",
+        badge: "속풀이 보장",
+        badgeColor: "bg-[#F3E9DC] text-[#5C3D2E]",
+        tips: "남은 야채와 고추, 물티슈 등을 요긴하게 사용해 최고의 국물맛 제조하기!"
+      },
+      {
+        time: "11:00",
+        title: "🔑 아일랜드 리솜 체크아웃",
+        desc: "2박 3일의 반짝였던 우리들의 추억을 방구석구석 남겨두고 미소 가득 퇴실",
+        category: "이동",
+        badge: "아쉬운 이별",
+        badgeColor: "bg-[#E5E5E5] text-[#333333]",
+        tips: "프론트에 룸 키를 반납하고 분리수거장에 쓰레기 안전 배출 완료하기"
+      },
+      {
+        time: "11:30",
+        title: "🍹 해변가 오션뷰 카페 여유",
+        desc: "떠나기 아쉬운 청량한 서해 바다를 눈앞에 두고 마시는 힐링 음료 한 잔",
+        category: "휴식",
+        badge: "힐링의 끝",
+        badgeColor: "bg-[#FFF2E6] text-[#E76F51]",
+        tips: "탁 트인 테라스에 나란히 앉아 서로 찍어준 귀여운 사진 공유하고 단톡방 폭파 대기하기"
+      },
+      {
+        time: "13:00",
+        title: "🦀 태안의 명물 게국지 점심",
+        desc: "달콤 짭조름하고 진한 꽃게 국물맛이 환상적인 게국지 한 상 푸짐하게 정복",
+        category: "식사",
+        badge: "로컬 찐맛집",
+        badgeColor: "bg-[#FFE1A8] text-[#8338EC]",
+        tips: "게국지와 간장게장, 양념게장이 한 세트로 나오는 구성 가성비 맛집 선택 추천"
+      },
+      {
+        time: "14:30",
+        title: "🚗 JJ Company M.T. 공식 해산!",
+        desc: "아쉬움과 힐링 에너지를 빵빵하게 채우고 각자의 귀가길을 향해 출발",
+        category: "이동",
+        badge: "안전 귀가 꼬옥",
+        badgeColor: "bg-[#FFE5EC] text-[#FF007F]",
+        tips: "식곤증 and 졸음운전을 방지하기 위해 신나는 하우스 뮤직을 틀고 껌이나 시원한 커피 소지하기!"
+      }
+    ]
+  }
+};
+
+// 기본 체크리스트 데이터 (찬조금/개인 텀블러 제외)
+const initialChecklist = [
+  { id: 1, text: "민증 및 운전면허증 (베스트 드라이버 수호용 💳)", category: "필수", checked: false },
+  { id: 2, text: "치카포카 세면도구 (칫솔, 치약, 귀여운 폼클렌징 🪥)", category: "개인", checked: false },
+  { id: 3, text: "인생샷 건질 여벌 옷 & 편한 홈웨어 트레이닝복 👕", category: "개인", checked: false },
+  { id: 4, text: "스마트폰 충전 케이블 & 든든한 보조 배터리 🔋", category: "개인", checked: false },
+  { id: 5, text: "개인 상비약 (혹시 모를 소화제, 밴드, 대일밴드 🩹)", category: "개인", checked: false },
+  { id: 6, text: "바베큐용 비밀 무기 허브솔트 & 감칠맛 쌈장 🧂", category: "마트", checked: false },
+  { id: 7, text: "야외 벌레 쫓아낼 모기 기피제 및 아기자기한 버물리 🦟", category: "기타", checked: false },
+  { id: 8, text: "차안과 바비큐장을 지켜줄 도톰한 물티슈 🧼", category: "마트", checked: false },
+  { id: 9, text: "우리의 새벽을 뜨겁게 달궈줄 보드게임 & 카드게임 🃏", category: "기타", checked: false },
+  { id: 10, text: "BGM을 풍성하게 메워줄 빵빵한 블루투스 스피커 📻", category: "기타", checked: false }
+];
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('day1');
+  const [checklist, setChecklist] = useState(() => {
+    const saved = localStorage.getItem(`${appId}-checklist`);
+    return saved ? JSON.parse(saved) : initialChecklist;
+  });
+  const [newCheckItem, setNewCheckItem] = useState('');
+  const [newCheckCat, setNewCheckCat] = useState('개인');
+
+  // BBQ 계산기 State
+  const [bbqPeople, setBbqPeople] = useState(4);
+  const [bbqAppetite, setBbqAppetite] = useState('normal'); // light, normal, heavy
+  const [bbqAlcohol, setBbqAlcohol] = useState('mild'); // none, mild, heavy
+
+  // AI Assistant State (사용자 API Key가 자동으로 기본 주입되었습니다)
+  const [aiApiKey, setAiApiKey] = useState('AIzaSyBpgJ8uvrSNxvDgys91kdVJahIVFRQ7DEU');
+  const [chatInput, setChatInput] = useState('');
+  const [chatHistory, setChatHistory] = useState([
+    { role: 'assistant', text: "안녕하세요! JJ Company M.T.를 알록달록 케어할 귀여운 전담 AI 요정 비서입니다. 🧚‍♀️\n익산 한옥마을부터 군산 이성당 빵집, 안면도의 시원한 바다까지 무엇이든 저에게 물어보세요! 아래에 궁금해하실 법한 빠른 질문 템플릿도 준비했답니다. 💛" }
+  ]);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  // Recreation State
+  const [recType, setRecType] = useState('drinking');
+  const [recDuration, setRecDuration] = useState('short');
+  const [recResult, setRecResult] = useState('');
+  const [recLoading, setRecLoading] = useState(false);
+
+  // 로컬스토리지 동기화
+  useEffect(() => {
+    localStorage.setItem(`${appId}-checklist`, JSON.stringify(checklist));
+  }, [checklist]);
+
+  // 체크리스트 상태 제어 함수
+  const toggleCheck = (id) => {
+    setChecklist(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
+  };
+
+  const deleteCheck = (id) => {
+    setChecklist(prev => prev.filter(item => item.id !== id));
+  };
+
+  const addCheckItem = (e) => {
+    e.preventDefault();
+    if (!newCheckItem.trim()) return;
+    const newItem = {
+      id: Date.now(),
+      text: newCheckItem.trim(),
+      category: newCheckCat,
+      checked: false
+    };
+    setChecklist(prev => [...prev, newItem]);
+    setNewCheckItem('');
+  };
+
+  // BBQ 결과 계산기
+  const getBbqResults = () => {
+    let meatMultiplier = 300; // normal
+    if (bbqAppetite === 'light') meatMultiplier = 200;
+    if (bbqAppetite === 'heavy') meatMultiplier = 400;
+
+    let totalMeatGrams = bbqPeople * meatMultiplier;
+    let porkGrams = Math.round(totalMeatGrams * 0.7);
+    let beefGrams = Math.round(totalMeatGrams * 0.3);
+
+    let sojuBottles = 0;
+    let beerCans = 0;
+    if (bbqAlcohol === 'mild') {
+      sojuBottles = Math.round(bbqPeople * 1);
+      beerCans = Math.round(bbqPeople * 1.5);
+    } else if (bbqAlcohol === 'heavy') {
+      sojuBottles = Math.round(bbqPeople * 2);
+      beerCans = Math.round(bbqPeople * 3);
+    }
+
+    return {
+      pork: porkGrams,
+      beef: beefGrams,
+      totalMeat: totalMeatGrams,
+      soju: sojuBottles,
+      beer: beerCans,
+      ramyeon: Math.round(bbqPeople * 1.2),
+      waterLiters: Math.round(bbqPeople * 1.5),
+      kimchiGrams: bbqPeople * 100,
+      sunbanLitter: Math.round(bbqPeople * 1.2)
+    };
+  };
+
+  const bbqResult = getBbqResults();
+
+  // 지수 백오프 Fetch 구현
+  const fetchWithBackoff = async (url, options, retries = 5, delay = 1000) => {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`HTTP Error Status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return fetchWithBackoff(url, options, retries - 1, delay * 2);
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  // Gemini API 호출 공통 함수
+  const callGemini = async (promptText, systemInstruction = "") => {
+    const targetApiKey = aiApiKey || ""; 
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${targetApiKey}`;
     
-    <style>
-        body {
-            font-family: 'Pretendard', 'Fredoka', 'Nunito', sans-serif;
-            background-color: #FCF6F0; /* Warm milky oat color */
-            color: #4A3E3D; /* Deep warm cocoa */
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F5EFE6;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FFCDB2;
-            border-radius: 10px;
-        }
-        .bouncy-hover {
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .bouncy-hover:hover {
-            transform: translateY(-2px) scale(1.02);
-        }
-        .bouncy-hover:active {
-            transform: translateY(1px) scale(0.98);
-        }
-    </style>
-</head>
-<body class="selection:bg-[#FFD1D1] selection:text-[#803E3D] min-h-screen pb-16">
+    const payload = {
+      contents: [{ parts: [{ text: promptText }] }]
+    };
 
-    <!-- STREAMING_CHUNK: Rendering the cute header with background patterns... -->
-    <!-- CUTE HEADER -->
-    <header class="relative overflow-hidden bg-gradient-to-b from-[#FFF2EB] to-[#FFF9F5] border-b-4 border-[#F5E1D3] py-10 px-4 text-center">
-        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#FFB4A2_1.5px,transparent_1.5px)] bg-[size:24px_24px]"></div>
+    if (systemInstruction) {
+      payload.systemInstruction = {
+        parts: [{ text: systemInstruction }]
+      };
+    }
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    };
+
+    return await fetchWithBackoff(url, options);
+  };
+
+  // 1. AI 챗봇 제출 이벤트
+  const handleChatSubmit = async (e, customText = null) => {
+    if (e) e.preventDefault();
+    const query = customText || chatInput;
+    if (!query.trim() || aiLoading) return;
+
+    const newHistory = [...chatHistory, { role: 'user', text: query }];
+    setChatHistory(newHistory);
+    setChatInput('');
+    setAiLoading(true);
+
+    const systemPrompt = `
+      너는 대기업 'JJ Company'의 친목 도모를 위한 2박 3일 M.T.(멤버십 트레이닝) 전담 전문 컨설턴트 및 AI 요정 비서야.
+      대화의 분위기는 아주 아기자기하고, 귀여운 이모티콘을 풍부하게 쓰며 친절하고 신나는 톤으로 응대해줘. (~해요, ~했답니다 체를 써서 러블리하게 대답해줘).
+      우리의 엠티 일정은 다음과 같아:
+      - 1일차(7/10): 10:30 출발 -> 12:50 본향 익산 (서동선화 정식 예약 완료!) -> 14:00 감성 한옥 정원 카페 추천 (AI추천: 단향) -> 15:00 시장(금마시장)/하나로마트 장보기 -> 16:00 고도한옥 1985 체크인 -> 18:00 도란도란 요리 경연 & 밤샘 수다 타임
+      - 2일차(7/11): 11:00 체크아웃 -> 12:00 익산역 정차 -> 13:00 군산 점심 (AI추천: 한일옥 소고기무국 노포) -> 14:30 달콤한 이성당 야채빵 쇼핑 -> 15:30 새만금방조제 음악 빵빵 드라이브 & 선유도 모래사장 낙조 산책 -> 17:00 숙소 태안 안면도 아일랜드 리솜 입실 -> 18:30 파도 소리와 함께 불타는 삼겹살 바베큐 파티!
+      - 3일차(7/12): 10:00 모닝 해장 라면 -> 11:00 체크아웃 -> 11:30 아쉬움을 담은 바다 전망 오션뷰 테라스 카페 휴식 -> 13:00 개운 칼칼한 게국지 로컬 푸드 점심 -> 14:30 기분 좋게 굿바이 해산
+
+      이 일정에 관한 상세 동선 꿀팁, 근처 찐맛집 비밀 공유, 안면도 물때 정보, 비가 올 때의 러블리한 감성 실내 대안 등 무엇이든 친구처럼 귀엽고 상세하게 플래닝해줘.
+    `;
+
+    try {
+      const data = await callGemini(query, systemPrompt);
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "아쉽게도 마법이 통하지 않았어요. 힝구.. 다시 전송 버튼을 꾸욱 눌러보시겠어요?";
+      setChatHistory(prev => [...prev, { role: 'assistant', text }]);
+    } catch (err) {
+      setChatHistory(prev => [...prev, { role: 'assistant', text: "인터넷 요정이 길을 잃었나 봐요! 네트워크 연결 상태나 혹시 API 키가 필요한 한도인지 체크해 주세요 흑흑.." }]);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // 2. 레크레이션 게임 메이커 빌더
+  const generateRecGame = async () => {
+    if (recLoading) return;
+    setRecLoading(true);
+    setRecResult('');
+
+    const prompt = `
+      JJ Company M.T.에서 플레이할 수 있는 엄청 귀엽고 기발하면서 웃음이 터지는 최고의 레크레이션 게임을 짜줘.
+      - 게임 분류: ${recType === 'brain' ? '새끼 손가락 뇌풀기 추리/두뇌형 🧠' : recType === 'physical' ? '온몸을 흔드는 댄싱 및 피지컬형 🏃' : recType === 'drinking' ? '분위기가 핑크빛으로 달아오르는 깜찍한 술자리 게임 🍻' : '처음 뭉쳤을 때 긴장감을 단숨에 날려줄 아이스브레이커 🧊'}
+      - 소요 시간: ${recDuration === 'short' ? '10분 내외로 속전속결 짜릿하게' : recDuration === 'mid' ? '20~30분 정도로 깊게 몰입' : '45분 이상 길고 탄탄하게 노는 스펙타클'}
+      - 참가자: 아주 활력 넘치고 해맑은 귀염둥이 성인 모임 (JJ Company 패밀리들)
+
+      다음 가이드를 꼭 따라줘:
+      1. [game_name] (톡톡 튀고 어그로 잘 끄는 사랑스러운 이름)
+      2. [summary] (한줄 요약 및 추천 타이밍)
+      3. [materials] (준비할 물건)
+      4. [rules] (귀염뽀짝한 게임 룰 설명 1, 2, 3...)
+      5. [penalty] (앙증맞은 벌칙 또는 우승 사은품 컨셉)
+      6. [tips] (게임 마스터를 위한 비장의 팁)
+    `;
+
+    try {
+      const data = await callGemini(prompt, "너는 세상에서 가장 텐션 높고 러블리한 예능 방송 전문 레크레이션 강사 요정이야.");
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "게임 추천 카드를 꺼내지 못했어요.. 다시 한 번 더 뿅 하고 클릭해주세요!";
+      setRecResult(text);
+    } catch (err) {
+      setRecResult("서버 응답 요정이 부끄러움을 타서 도망쳤나봐요! 다시 만들기를 눌러 응원해주세요 🧸");
+    } finally {
+      setRecLoading(false);
+    }
+  };
+
+  const copyChecklistToClipboard = () => {
+    const uncheckedList = checklist.filter(c => !c.checked).map(c => `[ ] ${c.text}`).join('\n');
+    const checkedList = checklist.filter(c => c.checked).map(c => `[v] ${c.text}`).join('\n');
+    const textToCopy = `🧸 === JJ Company M.T. 준비물 체크리스트 === 🧸\n\n[아직 덜 챙겼어요! 🥺]\n${uncheckedList || '모두 완벽하게 준비 완료!'}\n\n[벌써 다 챙겼어요! 😎]\n${checkedList || '아직 체크된 항목이 없어요'}`;
+    
+    const tempTextArea = document.createElement("textarea");
+    tempTextArea.value = textToCopy;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    try {
+      document.execCommand('copy');
+      alert("우리들의 깜찍한 체크리스트가 복사되었어요! 어서 단톡방에 자랑하러 가봐요! 💕🚀");
+    } catch (err) {
+      alert("앗! 복사 과정 중에 작은 꼬임이 있었나 봐요 ㅠ_ㅠ");
+    }
+    document.body.removeChild(tempTextArea);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FCFBF7] text-[#4A3F3D] font-sans selection:bg-[#FFCCD5] selection:text-[#C9184A]">
+      
+      {/* CUTE WARM HEADER */}
+      <header className="relative overflow-hidden bg-gradient-to-r from-[#FFF2EA] via-[#FDF5E6] to-[#FFF0E5] border-b-4 border-[#F5DFCD] py-12 px-4">
+        {/* Soft Polka Dot Pattern for playful vibe */}
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#E76F51_1px,transparent_1px)] bg-[size:20px_20px]"></div>
         
-        <div class="relative max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-1.5 bg-[#FFF0E2] border-2 border-[#FFCCD5] text-[#E56A77] px-4 py-1 rounded-full text-xs font-black tracking-wider mb-3 animate-bounce shadow-sm">
-                🍓 JJ Company 2026 M.T. 🍓
-            </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold text-[#7D5A50] tracking-tight">
-                Honey JJ Company M.T. 다이어리
-            </h1>
-            <p class="mt-3 text-[#9E847A] text-xs md:text-sm max-w-xl mx-auto font-medium leading-relaxed">
-                경남 진주 출발 ➔ 익산 역사 관광과 서천 에코리움, 군산 맛집 투어!<br>
-                안면도 수산시장 횟감과 바베큐, 리솜 야식으로 이어지는 환상의 2박 3일 🗺️🏡
-            </p>
-            
-            <div class="mt-5 inline-flex flex-wrap items-center justify-center gap-3 text-2xs md:text-xs text-[#7A645A] bg-white/90 border-2 border-[#F3EDE2] px-4 py-2.5 rounded-2xl shadow-sm">
-                <span>📍 <strong>출발지: 경남 진주시</strong></span>
-                <span class="text-[#EADFC9]">|</span>
-                <span>📅 <strong>7월 10일(금) - 12일(일)</strong></span>
-            </div>
+        <div className="relative max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-1.5 bg-[#FFF0F5] border-2 border-[#FFCCD5] text-[#D90429] px-4 py-1.5 rounded-full text-xs font-bold mb-4 tracking-wide shadow-sm animate-bounce">
+            🍓 JJ Company 2026 Season Membership Training 🍓
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#8B5E34]">
+            🍯 JJ Company M.T. 요정 캘린더
+          </h1>
+          <p className="mt-3 text-[#7D6B58] text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+            익산의 세련된 독채 한옥 고도한옥에서 시작해 태안 아일랜드 리솜 해넘이까지 이어지는 2박 3일 달콤포근 감성 워크숍 일정표 🏡🌊
+          </p>
+          
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 text-xs text-[#5C4F44] bg-white/80 border-2 border-[#F3EDE2] px-5 py-3 rounded-2xl shadow-sm backdrop-blur-sm">
+            <span className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E76F51] inline-block animate-pulse"></span>
+              <strong>일정:</strong> 7월 10일(금) - 7월 12일(일)
+            </span>
+            <span className="text-[#EADFC9]">|</span>
+            <span><strong>1차 요정둥지:</strong> 고도한옥 1985 🏡</span>
+            <span className="text-[#EADFC9]">|</span>
+            <span><strong>2차 오션궁전:</strong> 아일랜드 리솜 🏰</span>
+          </div>
         </div>
-    </header>
+      </header>
 
-    <!-- MAIN INTERACTIVE CONTAINER -->
-    <main class="max-w-4xl mx-auto px-4 mt-8">
+      {/* MAIN LAYOUT */}
+      <main className="max-w-5xl mx-auto px-4 py-8">
         
-        <!-- STREAMING_CHUNK: Generating tab navigation options... -->
-        <!-- TABS NAVIGATOR -->
-        <div class="flex overflow-x-auto gap-2 p-1.5 bg-[#F4EDE2] border-2 border-[#E3D5C1] rounded-2xl mb-8 shadow-inner scrollbar-none">
-            <button onclick="switchTab('day1')" id="btn-day1" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
-                <span>🎈 1일차</span>
-                <span>진주 ➔ 익산 투어</span>
-            </button>
-            <button onclick="switchTab('day2')" id="btn-day2" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
-                <span>🌊 2일차</span>
-                <span>군산 ➔ 서천 ➔ 태안</span>
-            </button>
-            <button onclick="switchTab('day3')" id="btn-day3" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
-                <span>🍼 3일차</span>
-                <span>태안 ➔ 진주 복귀</span>
-            </button>
-            <button onclick="switchTab('ai')" id="btn-ai" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-violet-500 hover:bg-violet-100/50">
-                <span> Fairy 요정</span>
-                <span>스마트 헬퍼 Hub</span>
-            </button>
+        {/* PASTELLISH TAB BUTTONS */}
+        <div className="flex overflow-x-auto gap-2 p-1.5 bg-[#F5EFE6] border-2 border-[#EADFC9] rounded-2xl mb-8 scrollbar-none shadow-inner">
+          <button
+            onClick={() => setActiveTab('day1')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'day1' 
+                ? 'bg-[#E76F51] text-white shadow-md transform scale-102' 
+                : 'text-[#7D6B58] hover:text-[#4A3F3D] hover:bg-[#EADFC9]/40'
+            }`}
+          >
+            <span>🎈 7.10 (금)</span>
+            <span>1일차 - 익산</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('day2')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'day2' 
+                ? 'bg-[#E76F51] text-white shadow-md transform scale-102' 
+                : 'text-[#7D6B58] hover:text-[#4A3F3D] hover:bg-[#EADFC9]/40'
+            }`}
+          >
+            <span>🌊 7.11 (토)</span>
+            <span>2일차 - 태안</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('day3')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'day3' 
+                ? 'bg-[#E76F51] text-white shadow-md transform scale-102' 
+                : 'text-[#7D6B58] hover:text-[#4A3F3D] hover:bg-[#EADFC9]/40'
+            }`}
+          >
+            <span>🧸 7.12 (일)</span>
+            <span>3일차 - 해산</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('checklist')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'checklist' 
+                ? 'bg-[#A8DADC] text-[#1D3557] shadow-md transform scale-102' 
+                : 'text-[#5E8C8F] hover:text-[#1D3557] hover:bg-[#D8E2DC]/40'
+            }`}
+          >
+            <span>🎒 준비 체크</span>
+            <span>나만의 장비목록</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('bbq')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'bbq' 
+                ? 'bg-[#E9C46A] text-[#5C3D2E] shadow-md transform scale-102' 
+                : 'text-[#8E7C68] hover:text-[#5C3D2E] hover:bg-[#F2E5C9]/40'
+            }`}
+          >
+            <span>🥩 바베큐 계산</span>
+            <span>고기/음주 뚝딱</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('ai')}
+            className={`flex-1 min-w-[95px] py-3.5 px-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 flex flex-col items-center gap-1 ${
+              activeTab === 'ai' 
+                ? 'bg-[#A78BFA] text-white shadow-md ring-4 ring-[#C4B5FD] transform scale-102' 
+                : 'text-[#7C3AED] hover:text-white hover:bg-[#EDE9FE]'
+            }`}
+          >
+            <span>🧚‍♀️ AI 요정</span>
+            <span>마법 컨설턴트</span>
+          </button>
         </div>
 
-        <!-- STREAMING_CHUNK: Creating Day 1 panel with heritage path details... -->
-        <!-- DAY 1 TIMELINE PANEL -->
-        <div id="panel-day1" class="tab-panel space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
-                <div>
-                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
-                        <span class="w-3 h-6 bg-[#FFB4A2] rounded-full inline-block"></span>
-                        1일차: 진주 출발 및 익산 보석·숲·문화재 탐방
-                    </h2>
-                    <p class="text-xs text-[#9E847A] mt-1">알차고 밀도 높은 첫날 관광 및 중앙시장 장보기 코스 🗺️</p>
-                </div>
-                <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-3 py-1.5 rounded-xl">
-                    🏮 거점: 익산 고도한옥 1985
-                </span>
-            </div>
-
-            <!-- List Timeline -->
-            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
-                <!-- Item 1: Departure -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 10:30</span>
-                            <span class="text-3xs font-bold text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full">출발지: 진주시</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🚗 진주시청 기준 출발</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">진주에서 고속도로를 이용하여 익산의 첫 번째 목적지인 '본향' 식당으로 신나게 이동합니다.</p>
-                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
-                            <strong>🗺️ 구글맵 추천 고속도로 경로:</strong> 진주IC ➔ 남해고속도로 ➔ 순천완주고속도로 북상 ➔ 완주JC ➔ 새만금포항고속도로 ➔ 익산IC 진출 ➔ 식당 도착 (약 190km / 주행시간 약 2시간 15분)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 2: Lunch -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 12:50</span>
-                            <span class="text-3xs font-bold text-[#4CAF50] bg-[#E8F5E9] px-2.5 py-1 rounded-full border border-[#C8E6C9]">🍀 예약 완료 🍀</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍱 점심 식사 : 본향 익산</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">향토적인 깊은 맛이 매력적인 '서동선화' 마 한정식 코스 요리로 든든하게 여행의 첫 식사를 채웁니다.</p>
-                    </div>
-                </div>
-
-                <!-- Item 3: Jewelry Museum -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 14:00</span>
-                            <span class="text-3xs font-bold text-amber-500 bg-[#FFFBEB] px-2 py-0.5 rounded-full">박물관</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">💎 익산보석박물관 관람</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">보석의 도시 익산의 랜드마크! 웅장하고 아름다운 보석 원석들과 조형물을 쾌적한 전시관에서 관람합니다.</p>
-                        <div class="mt-2.5 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-2.5 text-3xs text-[#8D6E63]">
-                            <strong>🗺️ 구글맵 동선:</strong> 본향 식당에서 왕궁면 소재의 보석박물관까지 차량으로 약 5분 소요되는 환상적인 초인접 동선입니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 4: Wanggung Forest -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 15:10</span>
-                            <span class="text-3xs font-bold text-emerald-500 bg-[#E8F5E9] px-2 py-0.5 rounded-full">힐링 숲</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🌿 왕궁 포레스트 관람</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">동화 같은 분위기를 내뿜는 아름다운 식물 온실과 숲 체험 정원을 아기자기하게 산책하며 피톤치드 힐링을 즐깁니다.</p>
-                        <div class="mt-2.5 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-2.5 text-3xs text-[#8D6E63]">
-                            <strong>🗺️ 구글맵 동선:</strong> 보석박물관에서 왕궁 포레스트까지는 차로 단 6분 거리! 이동 스트레스가 제로에 가깝습니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 5: Mireuksaji -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 16:20</span>
-                            <span class="text-3xs font-bold text-violet-500 bg-violet-50 px-2 py-0.5 rounded-full">시간 여유 시</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏛️ 미륵사지 및 국립익산박물관 관람</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">유네스코 세계문화유산인 미륵사지 석탑과 백제의 찬란한 유물을 집약한 아름다운 국립익산박물관을 여유롭게 감상합니다.</p>
-                        <div class="mt-2.5 bg-[#FFFDF7] border border-dashed border-[#FFCDB2] rounded-xl p-2.5 text-3xs text-[#8D6E63]">
-                            <strong>🗺️ 구글맵 동선:</strong> 왕궁 포레스트에서 미륵사지까지는 차량으로 북서방향 약 15분 소요됩니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 6: Jungang Market Shopping -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 17:40</span>
-                            <span class="text-3xs font-bold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">🔥 중앙시장 장보기 🔥</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🛍️ 익산 중앙시장 탐방 & 바베큐·야식 장보기</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">익산 시내 중심가에 위치한 정겨운 전통시장인 **중앙시장**을 구석구석 돌며 신선한 바베큐용 정육, 쌈 채소, 과일 및 군침 도는 야간 안주거리를 듬뿍 쇼핑합니다.</p>
-                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
-                            <strong>🗺️ 구글맵 동선:</strong> 미륵사지에서 익산 중앙시장(남쪽 시내 방향)까지는 차량으로 약 20분 소요됩니다. 장보기를 마친 뒤, 금마면에 위치한 숙소 '고도한옥 1985'까지는 차량으로 약 18분이 소요됩니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 7: Check-in -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-2.5 py-1 rounded-xl">🕒 19:00</span>
-                            <span class="text-3xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full">체크인</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🏡 고도한옥 1985 입실 & 늦은 저녁 준비</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">은은한 조명이 켜진 감성 한옥 숙소에 체크인하여, 중앙시장에서 공수해 온 고기와 야식 요리를 즐기며 1일차 밤을 낭만적으로 수놓습니다.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- STREAMING_CHUNK: Structuring Day 2 panel with Gunsan, Seocheon, and Anmyeondo Market... -->
-        <!-- DAY 2 TIMELINE PANEL -->
-        <div id="panel-day2" class="tab-panel hidden space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
-                <div>
-                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
-                        <span class="w-3 h-6 bg-[#A3E4D7] rounded-full inline-block"></span>
-                        2일차: 익산역 ➔ 군산 한일옥 ➔ 서천 에코리움 ➔ 안면도 수산시장 ➔ 리솜
-                    </h2>
-                    <p class="text-xs text-[#9E847A] mt-1">충남 서천의 대형 생태 박물관 관람 및 안면도 로컬 횟감 장보기 🌊</p>
-                </div>
-                <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-3 py-1.5 rounded-xl">
-                    🏨 거점: 태안 안면도 아일랜드 리솜
-                </span>
-            </div>
-
-            <!-- List Timeline -->
-            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
-                <!-- Check-out -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 11:00</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏡 고도한옥 1985 체크아웃</h4>
-                        <p class="text-xs text-[#7A645A] mt-1">아름다운 독채 한옥을 정리하고 분리수거 및 소지품을 꼼꼼하게 챙겨 출발합니다.</p>
-                    </div>
-                </div>
-
-                <!-- Iksan Station -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 12:00</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🚉 익산역 경유</h4>
-                        <p class="text-xs text-[#7A645A] mt-1">숙소에서 출발하여 약 20분을 이동해 익산역에서 중간 동료 합류 픽업 및 이동 동선 체크.</p>
-                    </div>
-                </div>
-
-                <!-- Confirm Hanilok -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 13:00</span>
-                            <span class="text-3xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">🍀 점심 확정 🍀</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍛 점심 식사 : 군산 한일옥</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">군산의 오랜 역사를 자랑하는 소고기무국의 절대 강자 **한일옥**에서 깊고 시원한 국물로 감동적인 점심식사를 만끽합니다.</p>
-                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
-                            <strong>🗺️ 구글맵 동선:</strong> 익산역에서 군산 한일옥까지 차량으로 약 30분 소요됩니다. (주차는 식당 맞은편 무료 공영주차장 이용 편리)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lee Sung Dang -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 14:30</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🥖 이성당 명물 빵집 쇼핑</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">전국에서 가장 오래된 대표 빵집에서 야채빵, 단팥빵을 가볍게 맛보고 디저트로 조달합니다.</p>
-                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
-                            <strong>🗺️ 구글맵 동선:</strong> 한일옥 식당에서 이성당 빵집까지는 차량으로 약 3분(도보 5분) 거리로 초인접해 있습니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ecorium -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 15:30</span>
-                            <span class="text-3xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">🌿 자연 온실</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🌿 국립생태원 에코리움 관람 (충남 서천)</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">세계 5대 기후의 온실 생태계를 한 번에 느끼며 쾌적하고 웅장한 기후 생태 체험관을 산책합니다.</p>
-                        <div class="mt-3 bg-[#F4FBF7] border border-dashed border-emerald-200 rounded-xl p-3 text-3xs text-emerald-800">
-                            <strong>🗺️ 군산 ➔ 서천 구글맵 동선:</strong> 이성당에서 <strong>금강하구둑</strong> 다리만 건너면 단 15분 만에 서천 국립생태원에 무사 도킹합니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Anmyeondo Fish Market (New Stop!) -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 17:10</span>
-                            <span class="text-3xs font-bold text-sky-500 bg-[#E0F2FE] px-2.5 py-0.5 rounded-full">🐟 싱싱한 활어회 🐟</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🐟 안면도 수산시장 횟감 포장</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">태안 안면도 중심지에 위치한 수산시장에서 저녁 바베큐 파티 때 곁들여 먹을 싱싱하고 쫄깃한 제철 횟감을 가득 포장합니다.</p>
-                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
-                            <strong>🗺️ 서천 ➔ 보령해저터널 ➔ 안면도 수산시장 동선:</strong> 서천 국립생태원에서 출발해 서해안고속도로 대천IC 진출 후, 바다 밑 신비로운 <strong>보령해저터널</strong>(77번 국도)을 통과해 안면도 수산시장까지 신나게 질주합니다 (차량으로 약 1시간 15분 소요).
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hanaro Mart (New Stop!) -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 17:45</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D]">🛒 수산시장 근처 하나로마트 장보기</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">수산시장 바로 근처에 인접한 하나로마트 안면도지점에 들려, 바베큐 파티용 숯불 고기와 채소, 구울 소시지, 마실 주류/음료를 빈틈없이 쇼핑합니다.</p>
-                    </div>
-                </div>
-
-                <!-- Resom Check-In & Seafood BBQ Party (New details!) -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm border-l-4 border-l-rose-400">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 18:30</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏨 리솜 입실 & 대망의 콜라보 바베큐 & 회 파티 🥩🐟</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">안면도 꽃지 노을이 일렁이는 아일랜드 리솜 리조트에 체크인 후, 노을 빛을 맞으며 따뜻한 고기 바베큐와 쫄깃탱글한 바다 활어회를 환상적으로 곁들여 최고급 저녁 만찬을 즐깁니다.</p>
-                        <div class="mt-3 bg-[#FFF5F5] border border-dashed border-rose-200 rounded-xl p-3 text-3xs text-rose-800">
-                            <strong>🗺️ 마트 ➔ 리조트 동선:</strong> 마트에서 꽃지해수욕장 아일랜드 리솜까지는 차로 10분 내로 닿는 매우 안정적인 최단거리 동선입니다.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Late-night Takeout (New!) -->
-                <div class="relative group">
-                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
-                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 21:30</span>
-                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🍿 아일랜드 리솜 내 한신포차 또는 BBQ치킨 야식 마무리</h4>
-                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">리조트 내부에 입점한 감성 포차 **한신포차** 또는 바삭한 **BBQ치킨**에서 군침 도는 야식을 포장하여 안락한 객실에서 친구들과 깊고 아늑하게 수다를 떨며 하루를 화려하게 마감합니다.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DAY 3 TIMELINE PANEL -->
-        <div id="panel-day3" class="tab-panel hidden space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
-                <div>
-                    <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
-                        <span class="w-3 h-6 bg-[#FFCDB2] rounded-full inline-block"></span>
-                        3일차: 안면도 힐링 후 귀가길
-                    </h2>
-                    <p class="text-xs text-[#9E847A] mt-1">서해 바다향을 마지막으로 머금고 안락하게 귀가해요 🐚</p>
-                </div>
-            </div>
-
-            <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 10:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🍜 상쾌한 모닝 속풀이 해장</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">리조트 안에서 시원하게 끓여내는 바다맛 해장라면 브런치!</p>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 11:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🔑 아일랜드 리솜 체크아웃</h4>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 11:30</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🌊 안면도 오션뷰 테라스 카페 휴식</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">시원한 아아를 마시며 이번 JJ Company 엠티 인생샷 피드를 정리합니다.</p>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 13:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🦀 안면도 명물 게국지 로컬 푸드 점심</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">원조 게국지 노포 식당에 방문해 칼칼하고 개운한 꽃게/배추 탕국 정식을 배부르게 정복!</p>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm border-l-4 border-l-rose-400">
-                    <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 14:30</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🚗 안전한 해산 및 진주 복귀길</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">우정을 가득 충전하고 운전자 졸음 예방 껌을 씹으며 출발지로 무사 귀환을 시작합니다.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- STREAMING_CHUNK: Preparing the Gemini AI chatbot visual helper layout... -->
-        <!-- AI TOUR ASSISTANT PANEL -->
-        <div id="panel-ai" class="tab-panel hidden space-y-6">
-            <div class="border-b-2 border-[#E8DFD0] pb-3">
-                <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
-                    <span class="w-3 h-6 bg-violet-300 rounded-full inline-block"></span>
-                     Fairy 요정 비서실 Hub
+        {/* TIMELINE DAYS (DAY 1, 2, 3) */}
+        {['day1', 'day2', 'day3'].includes(activeTab) && (
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between border-b-2 border-[#EADFC9] pb-4 mb-6">
+              <div>
+                <h2 className="text-xl md:text-2xl font-black text-[#5C4F44] flex items-center gap-2">
+                  <span className="w-3 h-7 bg-[#E76F51] rounded-full inline-block"></span>
+                  {initialItinerary[activeTab].date}
                 </h2>
-                <p class="text-xs text-[#9E847A] mt-1">Gemini 가이드 요정이 진주 출발 최적 고속도로 경로 및 중앙시장 장보기, 에코리움 숨은 팁을 상담해 줍니다.</p>
+                <p className="text-[#8E7C68] text-sm mt-1 font-medium">{initialItinerary[activeTab].title}</p>
+              </div>
+              <div className="mt-3 md:mt-0 px-4 py-2 bg-[#FDF8F5] border-2 border-[#F5DFCD] text-[#E76F51] text-xs font-bold rounded-2xl shadow-sm inline-block">
+                🛌 숙식 거점: {activeTab === 'day1' ? '고도한옥 1985 (익산) 🏮' : activeTab === 'day2' ? '태안 아일랜드 리솜 🏨' : '우리 모두 무사 안전 귀가 🏠'}
+              </div>
             </div>
 
-            <div class="bg-white border-2 border-[#F3EDE2] p-4 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs shadow-sm">
+            {/* TIMELINE LIST */}
+            <div className="relative border-l-4 border-dashed border-[#F0D5C0] ml-5 md:ml-8 space-y-8 py-2">
+              {initialItinerary[activeTab].items.map((item, index) => (
+                <div key={index} className="relative pl-8 md:pl-12 group">
+                  {/* Rounded Node Icon */}
+                  <span className="absolute -left-[16px] top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white border-4 border-[#E76F51] group-hover:bg-[#FFD166] transition-all duration-300 shadow-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#E76F51]"></span>
+                  </span>
+
+                  {/* Playful Cute Card */}
+                  <div className="bg-white border-2 border-[#F3EDE2] rounded-3xl p-6 hover:border-[#E76F51] hover:bg-[#FCFBF7]/50 hover:shadow-md transition-all duration-300">
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs md:text-sm font-black tracking-tight text-[#E76F51] bg-[#FFF0E5] px-3.5 py-1.5 rounded-2xl border border-[#FAD6BD]">
+                          🕒 {item.time}
+                        </span>
+                        <h3 className="text-base md:text-lg font-black text-[#4A3F3D] group-hover:text-[#E76F51] transition-colors">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <span className={`text-2xs font-bold px-3 py-1 rounded-full border shadow-sm ${item.badgeColor || 'bg-[#ECE2D0] text-[#7D6B58] border-[#DFD5C6]'}`}>
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <p className="text-[#5C4F44] text-sm leading-relaxed mb-4 font-medium">
+                      {item.desc}
+                    </p>
+
+                    {item.tips && (
+                      <div className="bg-[#FFFDF9] border-2 border-dashed border-[#E9C46A] rounded-2xl p-4 text-xs text-[#5C3D2E] flex gap-2 items-start shadow-inner">
+                        <span className="text-base select-none">💬</span>
+                        <div>
+                          <strong className="block text-[#E76F51] font-bold mb-1">🍬 요정의 감성 한 조각 꿀팁</strong>
+                          <p className="font-medium leading-relaxed">{item.tips}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* CHECKLIST TAB */}
+        {activeTab === 'checklist' && (
+          <div className="space-y-6">
+            <div className="border-b-2 border-[#EADFC9] pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div>
+                <h2 class="text-xl md:text-2xl font-black text-[#4A3F3D] flex items-center gap-2">
+                  <span className="w-3 h-7 bg-[#A8DADC] rounded-full inline-block"></span>
+                  🎒 JJ Company M.T. 앙증맞은 체크리스트
+                </h2>
+                <p className="text-[#6D8A8C] text-sm mt-1 font-medium">소중한 내 장비와 소품들을 꼼꼼하게 채워 넣어봐요!</p>
+              </div>
+              <button
+                onClick={copyChecklistToClipboard}
+                className="bg-[#A8DADC] hover:bg-[#8CC6C9] text-[#1D3557] border-2 border-[#81B9BC] text-xs font-bold px-4 py-2.5 rounded-2xl transition-all duration-200 flex items-center gap-1.5 shadow-sm"
+              >
+                💌 단톡방에 가방 뽐내기 (복사)
+              </button>
+            </div>
+
+            {/* Cute Bubble Progress Bar */}
+            <div className="bg-[#F0F8F8] border-2 border-[#D8E2DC] p-6 rounded-3xl">
+              <div className="flex justify-between items-center text-xs font-bold text-[#1D3557] mb-2.5">
+                <span>🎒 우리들의 캐리어 채움도</span>
+                <span className="text-[#E76F51]">
+                  {Math.round((checklist.filter(c => c.checked).length / checklist.length) * 100)}% ({checklist.filter(c => c.checked).length}/{checklist.length} 완료!)
+                </span>
+              </div>
+              <div className="w-full bg-white rounded-full h-4 border-2 border-[#D1E0E0] overflow-hidden p-0.5">
+                <div
+                  className="bg-gradient-to-r from-[#81B9BC] to-[#A8DADC] h-full rounded-full transition-all duration-500 shadow-inner"
+                  style={{ width: `${(checklist.filter(c => c.checked).length / checklist.length) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Checklist items by category */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {['필수', '개인', '마트', '기타'].map(cat => {
+                const catItems = checklist.filter(c => c.category === cat);
+                return (
+                  <div key={cat} className="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col shadow-sm">
+                    <h3 className="text-sm font-black text-[#5E8C8F] border-b-2 border-[#F0ECE1] pb-2.5 mb-3 flex justify-between items-center uppercase tracking-wide">
+                      <span>🏷️ {cat} 소품함</span>
+                      <span className="text-2xs bg-[#E8F1F2] px-2.5 py-0.5 rounded-full text-[#3A6B6D] font-bold">{catItems.length}개</span>
+                    </h3>
+                    <div className="space-y-2 flex-1">
+                      {catItems.length === 0 ? (
+                        <p className="text-stone-400 text-xs py-5 text-center font-medium">앗! 요기가 통통 비었어요 🧁</p>
+                      ) : (
+                        catItems.map(item => (
+                          <div
+                            key={item.id}
+                            className={`flex items-center justify-between p-3 rounded-2xl border-2 transition-all duration-200 ${
+                              item.checked
+                                ? 'bg-[#FAF9F5] border-[#EADFC9]/50 text-stone-400 line-through'
+                                : 'bg-white border-[#F3EDE2] text-[#4A3F3D] hover:border-[#A8DADC]'
+                            }`}
+                          >
+                            <label className="flex items-center gap-3 cursor-pointer select-none flex-1 font-medium">
+                              <input
+                                type="checkbox"
+                                checked={item.checked}
+                                onChange={() => toggleCheck(item.id)}
+                                className="w-5 h-5 rounded-full text-[#A8DADC] bg-white border-2 border-[#D1E0E0] focus:ring-[#A8DADC] focus:ring-offset-white cursor-pointer transition-all"
+                              />
+                              <span className="text-xs md:text-sm">{item.text}</span>
+                            </label>
+                            <button
+                              onClick={() => deleteCheck(item.id)}
+                              className="text-stone-300 hover:text-red-400 text-xs p-1.5 rounded-lg transition-colors"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Add Custom Item Form */}
+            <form onSubmit={addCheckItem} className="bg-[#FCFBF7] border-2 border-[#EADFC9] p-6 rounded-3xl shadow-sm">
+              <h3 className="text-sm font-black text-[#4A3F3D] mb-3">🎒 깜빡한 개인 소품 직접 구겨넣기</h3>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  placeholder="예: 예쁜 튜브, 젤리 간식, 보조 안경..."
+                  value={newCheckItem}
+                  onChange={(e) => setNewCheckItem(e.target.value)}
+                  className="flex-1 bg-white border-2 border-[#EADFC9] rounded-2xl px-4 py-3 text-xs text-[#4A3F3D] placeholder-stone-400 focus:outline-none focus:border-[#A8DADC] focus:ring-2 focus:ring-[#A8DADC]/20 font-medium"
+                />
+                <select
+                  value={newCheckCat}
+                  onChange={(e) => setNewCheckCat(e.target.value)}
+                  className="bg-white border-2 border-[#EADFC9] rounded-2xl px-4 py-3 text-xs text-[#4A3F3D] focus:outline-none focus:border-[#A8DADC] font-bold"
+                >
+                  <option value="개인">🎒 내 짐방</option>
+                  <option value="마트">🛒 장보기</option>
+                  <option value="필수">🚨 필수체크</option>
+                  <option value="기타">🎨 꿀잼놀거리</option>
+                </select>
+                <button
+                  type="submit"
+                  className="bg-[#A8DADC] hover:bg-[#8CC6C9] text-[#1D3557] font-black text-xs px-6 py-3 rounded-2xl transition-colors shadow-sm"
+                >
+                  콕 넣기
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* BBQ CALCULATOR TAB */}
+        {activeTab === 'bbq' && (
+          <div className="space-y-6">
+            <div className="border-b-2 border-[#EADFC9] pb-4">
+              <h2 className="text-xl md:text-2xl font-black text-[#4A3F3D] flex items-center gap-2">
+                <span className="w-3 h-7 bg-[#E9C46A] rounded-full inline-block"></span>
+                🥩 M.T. 감성 마트 장보기 계산기
+              </h2>
+              <p className="text-[#8E7C68] text-sm mt-1 font-medium">친구들의 먹성과 기분 맞춰 딱 맞춘 알짜배기 고기/주류 계산카드</p>
+            </div>
+
+            {/* Input Config Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
                 <div>
-                    <strong class="text-violet-600 block mb-0.5">Gemini 마법 스톤 장착 (선택)</strong>
-                    <span class="text-stone-400 text-[10px]">무제한 통신을 가동하고 싶다면 개인 API Key를 살짝 입력해 주세요.</span>
+                  <h4 className="text-xs font-black text-[#E76F51] uppercase tracking-wide mb-2">1. 같이 먹을 친구 수 👥</h4>
+                  <p className="text-stone-400 text-2xs mb-4">M.T.에 가는 침샘 고인 총 요정 멤버 수</p>
                 </div>
-                <input type="password" id="api-key-input" placeholder="Gemini API Key 입력" class="bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-2xs text-[#4A3E3D] focus:outline-none focus:border-violet-300 min-w-[210px]">
-            </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setBbqPeople(prev => Math.max(1, prev - 1))}
+                    className="w-11 h-11 rounded-2xl bg-[#FCFBF7] border-2 border-[#EADFC9] flex items-center justify-center font-black hover:bg-[#F5EFE6] text-[#E76F51] transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="flex-1 text-center font-black text-2xl text-[#4A3F3D]">{bbqPeople} 꼬맹이</span>
+                  <button
+                    onClick={() => setBbqPeople(prev => prev + 1)}
+                    className="w-11 h-11 rounded-2xl bg-[#FCFBF7] border-2 border-[#EADFC9] flex items-center justify-center font-black hover:bg-[#F5EFE6] text-[#E76F51] transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Game Sidebar -->
-                <div class="lg:col-span-5 bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm space-y-4">
-                    <div>
-                        <h3 class="text-xs font-black text-[#4A3E3D] mb-1">🎮 레크레이션 보따리 메이커</h3>
-                        <p class="text-stone-400 text-[10px]">한옥 거실이나 리솜 안방에서 즐길 대유잼 게임을 조합해 보세요.</p>
-                        
-                        <div class="space-y-3 mt-4">
-                            <select id="game-vibe-select" class="w-full bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-xs text-[#4A3E3D] focus:outline-none focus:border-violet-300 font-medium">
-                                <option value="drinking">🍻 주파수 연동! 대유잼 술자리 안주 게임</option>
-                                <option value="brain">🧠 마루바닥 추리 대결 두뇌 서바이벌</option>
-                            </select>
-                            <select id="game-time-select" class="w-full bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-2 text-xs text-[#4A3E3D] focus:outline-none focus:border-violet-300 font-medium">
-                                <option value="short">⚡ 10분 컷 순삭 스피드 내기</option>
-                                <option value="mid">🕰️ 30분 몰입형 딥 보드 룰</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button onclick="triggerGameGenerator()" id="btn-generate-game" class="w-full bg-violet-400 hover:bg-violet-500 text-white font-black text-xs py-3 rounded-xl bouncy-hover shadow-sm">
-                        ✨ 게임 규칙 연성하기
+              <div className="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                <div>
+                  <h4 className="text-xs font-black text-[#E76F51] uppercase tracking-wide mb-2">2. 고기 먹보 등급 🍖</h4>
+                  <p className="text-stone-400 text-2xs mb-4">인당 고기를 얼마나 먹어 치우나요?</p>
+                </div>
+                <div className="grid grid-cols-3 gap-1 bg-[#F5EFE6] p-1 rounded-2xl">
+                  {[
+                    { key: 'light', label: '소식 (200g)' },
+                    { key: 'normal', label: '적당 (300g)' },
+                    { key: 'heavy', label: '폭식 (400g)' }
+                  ].map(app => (
+                    <button
+                      key={app.key}
+                      onClick={() => setBbqAppetite(app.key)}
+                      className={`py-2 text-2xs font-bold rounded-xl transition-all duration-200 ${
+                        bbqAppetite === app.key
+                          ? 'bg-[#E76F51] text-white shadow-sm'
+                          : 'text-[#7D6B58] hover:text-[#4A3F3D]'
+                      }`}
+                    >
+                      {app.label}
                     </button>
+                  ))}
                 </div>
+              </div>
 
-                <!-- Chat Box -->
-                <div class="lg:col-span-7 bg-white border-2 border-[#F3EDE2] rounded-3xl overflow-hidden flex flex-col h-[400px] shadow-sm">
-                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FCFBF7] scrollbar-none">
-                        <div class="flex flex-col items-start max-w-[85%]">
-                            <span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span>
-                            <div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
-                                어서 오세요! <strong>경남 진주</strong>에서 출발해 <strong>익산의 매혹적인 고도한옥</strong>을 뚫고 <strong>군산 한일옥</strong>, <strong>서천 에코리움</strong>, 그리고 <strong>태안 아일랜드 리솜 야간 한신포차 콤보</strong>까지 설계된 알짜 우정여행 가이드 요정이에요! 🗺️✨ 안면도 수산시장 횟감 추천이나 드라이브 동선에 대해 궁금하신 점을 가볍게 여쭤봐 주세요! 💕
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="px-3 py-1.5 border-t border-[#F3EDE2] bg-[#FFF9F5] flex gap-1.5 overflow-x-auto scrollbar-none">
-                        <button onclick="sendQuickQuery('안면도 수산시장에서 요새 7월에 가장 저렴하고 쫄깃하게 먹을 수 있는 대표 횟감 물고기 종류 추천해줘!')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🐟 7월 안면도 제철 활어회</button>
-                        <button onclick="sendQuickQuery('서해안 고속도로 타고 가다가 서천 에코리움 근처에서 가볍게 들러볼 만한 예쁜 갈대밭이나 금강 뷰 포인트가 있나요?')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🌾 금강하구둑 조망 명소</button>
-                    </div>
-
-                    <form id="chat-input-form" class="p-2 border-t-2 border-[#F3EDE2] bg-white flex gap-1.5">
-                        <input type="text" id="chat-box-text" placeholder="요정 비서에게 동선 가이드를 물어보세요..." required class="flex-1 bg-[#FCF6F0] border-2 border-[#F0E4D2] rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-violet-300">
-                        <button type="submit" class="bg-violet-400 hover:bg-violet-500 text-white font-black text-2xs px-4 rounded-xl">송신</button>
-                    </form>
+              <div className="bg-white border-2 border-[#F3EDE2] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                <div>
+                  <h4 className="text-xs font-black text-[#E76F51] uppercase tracking-wide mb-2">3. 술고래 척도 🍻</h4>
+                  <p className="text-stone-400 text-2xs mb-4">우리 오늘밤 분위기 어떻게?</p>
                 </div>
+                <div className="grid grid-cols-3 gap-1 bg-[#F5EFE6] p-1 rounded-2xl">
+                  {[
+                    { key: 'none', label: '무알콜🍋' },
+                    { key: 'mild', label: '도란도란🥂' },
+                    { key: 'heavy', label: '불타게🔥' }
+                  ].map(alc => (
+                    <button
+                      key={alc.key}
+                      onClick={() => setBbqAlcohol(alc.key)}
+                      className={`py-2 text-2xs font-bold rounded-xl transition-all duration-200 ${
+                        bbqAlcohol === alc.key
+                          ? 'bg-[#E76F51] text-white shadow-sm'
+                          : 'text-[#7D6B58] hover:text-[#4A3F3D]'
+                      }`}
+                    >
+                      {alc.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <!-- Game Result Display -->
-            <div id="game-output-card" class="hidden bg-white border-2 border-violet-200 p-5 rounded-3xl shadow-sm">
-                <div id="game-result-body" class="text-xs text-[#7A645A] leading-relaxed whitespace-pre-wrap font-medium"></div>
+            {/* Outputs List */}
+            <div className="bg-[#FAF7F2] border-2 border-[#EADFC9] p-6 rounded-3xl shadow-sm">
+              <h3 className="text-base font-black text-[#4A3F3D] mb-4 flex items-center gap-2">
+                🍉 장보기 바구니 추천 한가득 영수증
+              </h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* Meat Card */}
+                <div className="bg-white border-2 border-[#F5DFCD] p-4 rounded-2xl shadow-sm">
+                  <span className="text-xs font-black text-[#FF4D6D] uppercase tracking-wide block mb-1">🥓 정육 코너 추천</span>
+                  <div className="text-xl font-black text-[#4A3F3D]">{bbqResult.totalMeat / 1000} kg <span className="text-xs text-stone-400 font-normal">(고기산더미)</span></div>
+                  <div className="mt-2.5 space-y-1.5 text-xs text-[#5C4F44]">
+                    <div className="flex justify-between border-b border-dashed border-[#F3EDE2] pb-1.5">
+                      <span>🐷 삼겹살&목살 믹스 (70%)</span>
+                      <span className="font-bold text-[#FF4D6D]">{bbqResult.pork} g</span>
+                    </div>
+                    <div className="flex justify-between pt-0.5">
+                      <span>🐮 맛보기 갈비/특수부위 (30%)</span>
+                      <span className="font-bold text-[#FF4D6D]">{bbqResult.beef} g</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Alcohol Card */}
+                <div className="bg-white border-2 border-[#D8E2DC] p-4 rounded-2xl shadow-sm">
+                  <span className="text-xs font-black text-[#5E8C8F] uppercase tracking-wide block mb-1">🍼 주류/음료 매대 추천</span>
+                  <div className="text-xl font-black text-[#4A3F3D]">
+                    {bbqAlcohol === 'none' ? '달콤한 제로 탄산모드 🥤' : `🍾 소주 ${bbqResult.soju}병 + 🍺 맥주 ${bbqResult.beer}캔`}
+                  </div>
+                  <div className="mt-2.5 text-xs text-stone-400 font-medium">
+                    {bbqAlcohol === 'none' ? '토닉워터와 슬라이스 레몬, 탄산수를 한 박스 가득 준비해보세요!' : '과도한 음주는 숙면 방해와 이불 킥 유발 요인입니다 찡긋-'}
+                  </div>
+                </div>
+
+                {/* Side Goods Card */}
+                <div className="bg-white border-2 border-[#EADFC9] p-5 rounded-2xl sm:col-span-2 shadow-sm">
+                  <span className="text-xs font-black text-[#E9C46A] uppercase tracking-wide block mb-2.5">🍱 필수 요깃거리 및 서브 재료</span>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-[#4A3F3D] font-bold">
+                    <div className="bg-[#FCFBF7] px-3.5 py-3 rounded-xl border-2 border-[#F3EDE2] text-center">
+                      <span className="block text-stone-400 text-3xs mb-0.5">생수 용량</span>
+                      <strong className="text-[#E76F51]">{bbqResult.waterLiters} 리터</strong>
+                    </div>
+                    <div className="bg-[#FCFBF7] px-3.5 py-3 rounded-xl border-2 border-[#F3EDE2] text-center">
+                      <span className="block text-stone-400 text-3xs mb-0.5">해장용 라면</span>
+                      <strong className="text-[#E76F51]">{bbqResult.ramyeon} 봉지</strong>
+                    </div>
+                    <div className="bg-[#FCFBF7] px-3.5 py-3 rounded-xl border-2 border-[#F3EDE2] text-center">
+                      <span className="block text-stone-400 text-3xs mb-0.5">든든한 햇반</span>
+                      <strong className="text-[#E76F51]">{bbqResult.sunbanLitter} 개입</strong>
+                    </div>
+                    <div className="bg-[#FCFBF7] px-3.5 py-3 rounded-xl border-2 border-[#F3EDE2] text-center">
+                      <span className="block text-stone-400 text-3xs mb-0.5">아삭한 김치</span>
+                      <strong className="text-[#E76F51]">{bbqResult.kimchiGrams} g</strong>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Tips Banner */}
+              <div className="mt-5 p-4 bg-white rounded-2xl border-2 border-dashed border-[#FAD6BD] text-xs text-[#7D6B58] leading-relaxed flex items-center gap-3">
+                <span className="text-xl">💡</span>
+                <p className="font-medium">위 값은 JJ Company 요정이 기획한 완벽 가이드 수치랍니다! 리조트 바비큐의 성공 유무는 쌈야채 양(깻잎 최고!)과 숯불 소시지, 마시멜로우 존재 유무에 따라 결정되니 장바구니에 꼭 추가해 가세요!</p>
+              </div>
             </div>
-        </div>
+          </div>
+        )}
 
-    </main>
+        {/* AI TOUR ASSISTANT TAB */}
+        {activeTab === 'ai' && (
+          <div className="space-y-8">
+            {/* Intro */}
+            <div className="border-b-2 border-[#EADFC9] pb-4">
+              <h2 className="text-xl md:text-2xl font-black text-[#4A3F3D] flex items-center gap-2">
+                <span className="w-3 h-7 bg-[#A78BFA] rounded-full inline-block"></span>
+                🧚‍♀️ AI 요정의 스마트 워크숍 대기소
+              </h2>
+              <p className="text-stone-500 text-sm mt-1 font-medium">
+                Gemini 요정 가동 허브. 마법 룰에 따른 레크리에이션 짜기, 돌발 비 내리는 상황 우비 플랜B, 맛집 상세 지도도 1초 만에 척척 해결합니다.
+              </p>
+            </div>
 
-    <!-- STREAMING_CHUNK: Integrating the tab toggle script and API triggers... -->
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            {/* Optional Key */}
+            <div className="bg-white border-2 border-[#EADFC9] p-4 rounded-2xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+              <div>
+                <span className="font-black text-[#7C3AED] block mb-0.5">Gemini API 마법 스톤 주입</span>
+                <span className="text-stone-400 text-3xs">더 튼튼한 한도와 강력한 마법을 원하시면 개인 키를 아래에 적어 요정에게 건네주세요.</span>
+              </div>
+              <input
+                type="password"
+                placeholder="마법 스톤 API Key (선택)"
+                value={aiApiKey}
+                onChange={(e) => setAiApiKey(e.target.value)}
+                className="bg-[#FCFBF7] border-2 border-[#EADFC9] rounded-xl px-3.5 py-2 text-2xs text-[#4A3E3D] placeholder-stone-400 focus:outline-none focus:border-[#A78BFA] min-w-[210px] font-medium"
+              />
+            </div>
 
-            const tabs = ['day1', 'day2', 'day3', 'ai'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`btn-${t}`);
-                if(btn) {
-                    btn.className = t === 'ai' 
-                      ? "flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-violet-500 hover:bg-violet-100/50"
-                      : "flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]";
-                }
-            });
+            {/* Tool Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Game Maker */}
+              <div className="lg:col-span-5 bg-white border-2 border-[#EADFC9] p-5 rounded-3xl flex flex-col justify-between shadow-sm">
+                <div>
+                  <h3 className="text-sm font-black text-[#4A3F3D] flex items-center gap-2 mb-3">
+                    🎮 꿀잼 레크레이션 게임 조제기
+                  </h3>
+                  <p className="text-[#7D6B58] text-xs leading-relaxed mb-4 font-medium">
+                    오늘 한옥 마당이나 리조트 거실 바닥에서 돗자리를 펴고 친구들과 포복절도하게 놀 수 있는 기막힌 매치를 연성해보세요.
+                  </p>
 
-            const activeBtn = document.getElementById(`btn-${tabId}`);
-            if(activeBtn) {
-                if(tabId === 'ai') activeBtn.className = "flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-violet-400 text-white shadow-md transform scale-102";
-                else activeBtn.className = "flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 bg-[#FFB4A2] text-white shadow-md transform scale-102";
-            }
-        }
+                  <div className="space-y-3 mb-6">
+                    <div>
+                      <label className="block text-3xs text-stone-400 font-bold mb-1.5 uppercase">어떤 맛의 게임?</label>
+                      <select
+                        value={recType}
+                        onChange={(e) => setRecType(e.target.value)}
+                        className="w-full bg-[#FCFBF7] border-2 border-[#EADFC9] rounded-2xl px-3 py-2.5 text-xs text-[#4A3E3D] focus:outline-none focus:border-[#A78BFA] font-bold"
+                      >
+                        <option value="drinking">🍻 텐션 업! 분위기 폭파 음주 게임</option>
+                        <option value="brain">🧠 수줍게 소파에 앉아 노는 추리 퀴즈</option>
+                        <option value="physical">🏃 온몸을 뒤틀어 말해요 몸짓 매치</option>
+                        <option value="icebreaker">🧊 어색한 얼음을 즉시 망치질하는 해동게임</option>
+                      </select>
+                    </div>
 
-        async function triggerGeminiCall(promptText, systemText) {
-            const typedKey = document.getElementById('api-key-input').value.trim();
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${typedKey}`;
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: promptText }] }],
-                    systemInstruction: systemText ? { parts: [{ text: systemText }] } : undefined
-                })
-            });
-            if(!response.ok) throw new Error("Key Error or Network Error");
-            return await response.json();
-        }
+                    <div>
+                      <label className="block text-3xs text-stone-400 font-bold mb-1.5 uppercase">얼마나 길게 놀아요?</label>
+                      <select
+                        value={recDuration}
+                        onChange={(e) => setRecDuration(e.target.value)}
+                        className="w-full bg-[#FCFBF7] border-2 border-[#EADFC9] rounded-2xl px-3 py-2.5 text-xs text-[#4A3E3D] focus:outline-none focus:border-[#A78BFA] font-bold"
+                      >
+                        <option value="short">⚡ 5분~10분 순삭 짜릿하게 한 판!</option>
+                        <option value="mid">🕰️ 20~30분 기승전결 우정다지기</option>
+                        <option value="long">🎪 1시간 짜리 스케일 장기자랑 세션</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
-        document.getElementById('chat-input-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const box = document.getElementById('chat-box-text');
-            const txt = box.value.trim();
-            if(!txt) return;
-            box.value = '';
-            await processChatMessage(txt);
-        });
+                <div>
+                  <button
+                    onClick={generateRecGame}
+                    disabled={recLoading}
+                    className="w-full bg-[#A78BFA] hover:bg-[#8B5CF6] disabled:bg-stone-200 text-white font-black text-xs py-3.5 rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    {recLoading ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        예능 마법 주문서 제작 중...
+                      </>
+                    ) : (
+                      "✨ 마법 요정 게임 연성 뿅!"
+                    )}
+                  </button>
+                </div>
+              </div>
 
-        async function sendQuickQuery(q) { await processChatMessage(q); }
+              {/* Chatbot Container */}
+              <div className="lg:col-span-7 bg-white border-2 border-[#EADFC9] rounded-3xl overflow-hidden flex flex-col h-[500px] shadow-sm">
+                
+                {/* Chat Header */}
+                <div className="bg-[#FAF7F2] p-4 border-b-2 border-[#EADFC9] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#386641] animate-pulse"></span>
+                    <strong className="text-xs text-[#4A3F3D] font-black">🧚‍♀️ 요정 비서와 속삭임 상담</strong>
+                  </div>
+                  <button
+                    onClick={() => setChatHistory([{ role: 'assistant', text: "기억 구슬을 새롭게 씻어냈어요! 새로운 수다를 나눌 준비 완료!" }])}
+                    className="text-3xs text-stone-400 hover:text-[#FF4D6D] font-bold transition-colors"
+                  >
+                    대화 초기화구슬
+                  </button>
+                </div>
 
-        async function processChatMessage(text) {
-            const chatBox = document.getElementById('chat-messages');
-            chatBox.innerHTML += `<div class="flex flex-col items-end max-w-[85%] ml-auto"><span class="text-[9px] text-stone-400 font-bold mb-0.5">You 👩‍🚀</span><div class="bg-[#FFB4A2] text-white text-xs p-3 rounded-2xl rounded-tr-none shadow-sm">${text}</div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+                {/* Messages Body */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3.5 scrollbar-none bg-[#FCFBF7]/30">
+                  {chatHistory.map((chat, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex flex-col max-w-[85%] ${
+                        chat.role === 'user' ? 'ml-auto items-end' : 'mr-auto items-start'
+                      }`}
+                    >
+                      <span className="text-3xs text-stone-400 mb-0.5 px-1 uppercase tracking-wide font-bold">
+                        {chat.role === 'user' ? '우리들 👩‍🚀' : '요정 비서 🧚‍♀️'}
+                      </span>
+                      <div
+                        className={`p-3.5 rounded-2xl text-xs leading-relaxed whitespace-pre-wrap font-medium shadow-sm ${
+                          chat.role === 'user'
+                            ? 'bg-[#E76F51] text-white rounded-tr-none'
+                            : 'bg-white border-2 border-[#F3EDE2] text-[#4A3F3D] rounded-tl-none'
+                        }`}
+                      >
+                        {chat.text}
+                      </div>
+                    </div>
+                  ))}
+                  {aiLoading && (
+                    <div className="mr-auto items-start max-w-[85%] flex flex-col">
+                      <span className="text-3xs text-stone-400 mb-0.5 px-1 font-bold uppercase tracking-wide">요정 비서 🧚‍♀️</span>
+                      <div className="bg-white border-2 border-[#F3EDE2] text-stone-400 p-3.5 rounded-2xl rounded-tl-none flex items-center gap-2.5 text-xs shadow-sm">
+                        <span className="w-1.5 h-1.5 bg-[#A78BFA] rounded-full animate-bounce"></span>
+                        <span className="w-1.5 h-1.5 bg-[#A78BFA] rounded-full animate-bounce delay-100"></span>
+                        <span className="w-1.5 h-1.5 bg-[#A78BFA] rounded-full animate-bounce delay-200"></span>
+                        <span className="font-medium text-2xs">안면도 조개 주우러 가는 지도 분석 중...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-            const loaderId = `loader-${Date.now()}`;
-            chatBox.innerHTML += `<div id="${loaderId}" class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-white border-2 border-[#F3EDE2] text-stone-400 p-3 rounded-2xl rounded-tl-none text-xs flex gap-1"><span class="animate-bounce">●</span><span class="animate-bounce" style="animation-delay:0.1s">●</span><span>구글맵 경로 연산중..</span></div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+                {/* Quick Templates Input Buttons */}
+                <div className="px-4 py-2 border-t-2 border-[#F3EDE2] bg-[#FAF7F2] flex gap-2 overflow-x-auto scrollbar-none">
+                  <button
+                    onClick={(e) => handleChatSubmit(null, "익산 고도한옥 1985 주변 차로 5분 내 마당 이쁜 포토존 카페 가르쳐줘!")}
+                    className="flex-shrink-0 bg-white hover:bg-[#FFF0E5] text-stone-600 hover:text-[#E76F51] border-2 border-[#F3EDE2] px-3 py-2 rounded-xl text-3xs font-bold transition-all shadow-sm"
+                  >
+                    ☕ 인생샷 카페 스팟
+                  </button>
+                  <button
+                    onClick={(e) => handleChatSubmit(null, "군산 이성당에서 시그니처 빵 사고 근처 갈 만한 이쁜 소품숍 가 알려줘")}
+                    className="flex-shrink-0 bg-white hover:bg-[#FFF0E5] text-stone-600 hover:text-[#E76F51] border-2 border-[#F3EDE2] px-3 py-2 rounded-xl text-3xs font-bold transition-all shadow-sm"
+                  >
+                    🧸 군산 이쁜 빵집 주변투어
+                  </button>
+                  <button
+                    onClick={(e) => handleChatSubmit(null, "태안 아일랜드 리솜 바비큐 구울 때 찰떡인 귀염뽀짝 댄싱 Playlist 어울릴 곡 몇 개 줘")}
+                    className="flex-shrink-0 bg-white hover:bg-[#FFF0E5] text-stone-600 hover:text-[#E76F51] border-2 border-[#F3EDE2] px-3 py-2 rounded-xl text-3xs font-bold transition-all shadow-sm"
+                  >
+                    🎵 바비큐 감성 플레이리스트
+                  </button>
+                </div>
 
-            const system = "너는 JJ Company M.T. 전문 귀여운 파스텔 요정 비서야. 진주시에서 출발해 익산 보석박물관, 군산 한일옥(확정), 서천 생태원 에코리움, 안면도 수산시장 횟감 포장 꿀동선 가이드를 가르쳐주고, 밤에 리솜 아일랜드 내부 한신포차와 BBQ치킨 야식 조화의 낭만을 신나게 대답해줘.";
-            
-            try {
-                const data = await triggerGeminiCall(text, system);
-                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "요정이 졸고있어요!";
-                document.getElementById(loaderId).remove();
-                chatBox.innerHTML += `<div class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none whitespace-pre-wrap leading-relaxed shadow-sm">${reply}</div></div>`;
-            } catch(e) {
-                document.getElementById(loaderId).remove();
-                chatBox.innerHTML += `<div class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-rose-50 border border-rose-200 text-xs text-rose-700 p-3 rounded-2xl rounded-tl-none shadow-sm">API Key를 마법 스톤에 쏙 장착해 주시면 실시간 익산/군산 맛집 정보 및 안면도 수산시장 싱싱한 자연산 횟감 추천 가이드 상담이 깨어난답니다! 💕</div></div>`;
-            }
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+                {/* Chat Input form */}
+                <form onSubmit={handleChatSubmit} className="p-3 border-t-2 border-[#EADFC9] bg-white flex gap-2">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="요정아, 군산이나 태안에 비 오면 어떻게 놀아?..."
+                    className="flex-1 bg-[#FCFBF7] border-2 border-[#EADFC9] rounded-2xl px-4 py-2.5 text-xs text-[#4A3F3D] placeholder-stone-400 focus:outline-none focus:border-[#A78BFA] font-medium"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#A78BFA] hover:bg-[#8B5CF6] text-white font-black text-xs px-5 py-2.5 rounded-2xl transition-colors shadow-sm"
+                  >
+                    날려
+                  </button>
+                </form>
+              </div>
 
-        async function triggerGameGenerator() {
-            const v = document.getElementById('game-vibe-select').value;
-            const t = document.getElementById('game-time-select').value;
-            const btn = document.getElementById('btn-generate-game');
-            btn.innerText = "🔮 조제 중...";
-            btn.disabled = true;
+            </div>
 
-            const query = `분위기: ${v}, 시간조건: ${t}에 맞춰 엠티에서 할 수 있는 귀여운 레크레이션 게임을 기획 이름, 준비물, 규칙, 벌칙 순으로 요약해줘.`;
-            try {
-                const data = await triggerGeminiCall(query, "너는 세상에서 제일 예능감이 뛰어난 오락 부장 요정이야.");
-                const res = data.candidates?.[0]?.content?.parts?.[0]?.text || "실패!";
-                document.getElementById('game-result-body').innerText = res;
-                document.getElementById('game-output-card').classList.remove('hidden');
-            } catch(e) {
-                alert("상단 마법 스톤에 개인 API 키를 입력하시면 대유잼 레크리에이션 기획안이 자동 소환됩니다! 🎮");
-            } finally {
-                btn.innerText = "✨ 게임 규칙 연성하기";
-                btn.disabled = false;
-            }
-        }
+            {/* Game Result Card */}
+            {recResult && (
+              <div className="bg-white border-2 border-[#C4B5FD] p-6 rounded-3xl shadow-md mt-4 animate-fadeIn">
+                <div className="flex justify-between items-center border-b-2 border-[#EADFC9] pb-3 mb-4">
+                  <h4 className="text-sm font-black text-[#7C3AED] uppercase tracking-wider flex items-center gap-1.5">
+                    🔮 요정의 마법 보따리 놀이 기획서 배달!
+                  </h4>
+                  <button
+                    onClick={() => {
+                      const temp = document.createElement("textarea");
+                      temp.value = recResult;
+                      document.body.appendChild(temp);
+                      temp.select();
+                      document.execCommand('copy');
+                      alert("게임 규칙 카드가 다이어리에 안전 복사되었어요! 🎮");
+                      document.body.removeChild(temp);
+                    }}
+                    className="text-2xs bg-[#FCFBF7] hover:bg-[#FAF7F2] border-2 border-[#EADFC9] px-3 py-1.5 rounded-xl text-stone-500 font-bold transition-colors"
+                  >
+                    종이 복사하기
+                  </button>
+                </div>
+                <div className="text-xs text-[#5C4F44] leading-relaxed whitespace-pre-wrap font-medium">
+                  {recResult}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
-        window.onload = function() { switchTab('day1'); };
-    </script>
-</body>
-</html>
-```eof
+      </main>
 
-http://googleusercontent.com/immersive_entry_chip/0
+      {/* CUTE FOOTER */}
+      <footer className="border-t-2 border-[#EADFC9] bg-[#FAF7F2] py-10 px-4 mt-20 text-center text-[#8E7C68] text-xs font-medium">
+        <p className="mb-2">🥞 JJ Company 2박 3일 M.T. Dashboard © 2026</p>
+        <p className="text-stone-400 text-3xs leading-relaxed">Created with Cozy Pastellish Design Tokens for Cute and Cozy Friends M.T. 🧸🍼</p>
+      </footer>
+    </div>
+  );
+}
+
+```
