@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- STREAMING_CHUNK: Setting up meta tags, stylesheets, and fonts... -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🧸 JJ Company M.T. 스마트 다이어리</title>
@@ -41,6 +42,7 @@
 </head>
 <body class="selection:bg-[#FFD1D1] selection:text-[#803E3D] min-h-screen pb-16">
 
+    <!-- STREAMING_CHUNK: Rendering the cute header with background patterns... -->
     <!-- CUTE HEADER -->
     <header class="relative overflow-hidden bg-gradient-to-b from-[#FFF2EB] to-[#FFF9F5] border-b-4 border-[#F5E1D3] py-10 px-4 text-center">
         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#FFB4A2_1.5px,transparent_1.5px)] bg-[size:24px_24px]"></div>
@@ -50,11 +52,11 @@
                 🍓 JJ Company 2026 M.T. 🍓
             </div>
             <h1 class="text-3xl md:text-5xl font-extrabold text-[#7D5A50] tracking-tight">
-                🍯 JJ Company M.T. 다이어리
+                Honey JJ Company M.T. 다이어리
             </h1>
             <p class="mt-3 text-[#9E847A] text-xs md:text-sm max-w-xl mx-auto font-medium leading-relaxed">
-                진주시에서 출발해 익산의 한옥과 보석·문화재 관광을 즐기고,<br>
-                중앙시장 장보기부터 서천 에코리움, 태안 리조트까지 이어지는 우정의 2박 3일 🗺️🏡
+                경남 진주 출발 ➔ 익산 역사 관광과 서천 에코리움, 군산 맛집 투어!<br>
+                안면도 수산시장 횟감과 바베큐, 리솜 야식으로 이어지는 환상의 2박 3일 🗺️🏡
             </p>
             
             <div class="mt-5 inline-flex flex-wrap items-center justify-center gap-3 text-2xs md:text-xs text-[#7A645A] bg-white/90 border-2 border-[#F3EDE2] px-4 py-2.5 rounded-2xl shadow-sm">
@@ -68,19 +70,20 @@
     <!-- MAIN INTERACTIVE CONTAINER -->
     <main class="max-w-4xl mx-auto px-4 mt-8">
         
+        <!-- STREAMING_CHUNK: Generating tab navigation options... -->
         <!-- TABS NAVIGATOR -->
         <div class="flex overflow-x-auto gap-2 p-1.5 bg-[#F4EDE2] border-2 border-[#E3D5C1] rounded-2xl mb-8 shadow-inner scrollbar-none">
             <button onclick="switchTab('day1')" id="btn-day1" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
                 <span>🎈 1일차</span>
-                <span>진주 ➔ 익산 보석·시장</span>
+                <span>진주 ➔ 익산 투어</span>
             </button>
             <button onclick="switchTab('day2')" id="btn-day2" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
                 <span>🌊 2일차</span>
-                <span>익산 ➔ 서천 에코리움 ➔ 태안</span>
+                <span>군산 ➔ 서천 ➔ 태안</span>
             </button>
             <button onclick="switchTab('day3')" id="btn-day3" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-[#7A645A] hover:bg-[#FAF7F2]">
                 <span>🍼 3일차</span>
-                <span>태안 ➔ 귀가</span>
+                <span>태안 ➔ 진주 복귀</span>
             </button>
             <button onclick="switchTab('ai')" id="btn-ai" class="flex-1 min-w-[100px] py-3 rounded-xl text-xs font-bold transition-all duration-300 flex flex-col items-center gap-1 text-violet-500 hover:bg-violet-100/50">
                 <span> Fairy 요정</span>
@@ -88,15 +91,16 @@
             </button>
         </div>
 
+        <!-- STREAMING_CHUNK: Creating Day 1 panel with heritage path details... -->
         <!-- DAY 1 TIMELINE PANEL -->
         <div id="panel-day1" class="tab-panel space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
                 <div>
                     <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
                         <span class="w-3 h-6 bg-[#FFB4A2] rounded-full inline-block"></span>
-                        1일차: 진주 출발 및 익산 보석·문화재·중앙시장 투어
+                        1일차: 진주 출발 및 익산 보석·숲·문화재 탐방
                     </h2>
-                    <p class="text-xs text-[#9E847A] mt-1">알차고 밀도 높은 첫날 문화재 관광 및 전통시장 장보기 코스 🗺️</p>
+                    <p class="text-xs text-[#9E847A] mt-1">알차고 밀도 높은 첫날 관광 및 중앙시장 장보기 코스 🗺️</p>
                 </div>
                 <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#FFF0E8] text-[#E76F51] border border-[#FFD8C2] px-3 py-1.5 rounded-xl">
                     🏮 거점: 익산 고도한옥 1985
@@ -166,7 +170,7 @@
                     </div>
                 </div>
 
-                <!-- Item 5: Mireuksaji (Optional) -->
+                <!-- Item 5: Mireuksaji -->
                 <div class="relative group">
                     <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#FFB4A2] shadow-sm"></span>
                     <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#FFB4A2] transition-all shadow-sm">
@@ -213,15 +217,16 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK: Structuring Day 2 panel with Gunsan, Seocheon, and Anmyeondo Market... -->
         <!-- DAY 2 TIMELINE PANEL -->
         <div id="panel-day2" class="tab-panel hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#E8DFD0] pb-3 mb-6">
                 <div>
                     <h2 class="text-xl font-extrabold text-[#6E5044] flex items-center gap-2">
                         <span class="w-3 h-6 bg-[#A3E4D7] rounded-full inline-block"></span>
-                        2일차: 익산 ➔ 군산 ➔ 서천 에코리움 ➔ 태안
+                        2일차: 익산역 ➔ 군산 한일옥 ➔ 서천 에코리움 ➔ 안면도 수산시장 ➔ 리솜
                     </h2>
-                    <p class="text-xs text-[#9E847A] mt-1">충남 서천의 대형 생태 박물관 관람 및 서해안 터널 드라이브 코스 🌊</p>
+                    <p class="text-xs text-[#9E847A] mt-1">충남 서천의 대형 생태 박물관 관람 및 안면도 로컬 횟감 장보기 🌊</p>
                 </div>
                 <span class="mt-2 sm:mt-0 text-3xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-3 py-1.5 rounded-xl">
                     🏨 거점: 태안 안면도 아일랜드 리솜
@@ -230,48 +235,118 @@
 
             <!-- List Timeline -->
             <div class="relative border-l-4 border-dashed border-[#F0E4D2] ml-4 md:ml-6 pl-6 md:pl-8 space-y-6">
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 11:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏡 고도한옥 1985 체크아웃</h4>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 12:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🚉 익산역 경유</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">숙소에서 출발하여 약 20분을 이동해 익산역에서 중간 동료 합류 픽업 및 이동 동선 체크.</p>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 13:00</span>
-                        <span class="text-3xs font-bold text-violet-500 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">✨ AI 추천 스팟 ✨</span>
-                    </div>
-                    <h4 class="text-sm font-bold text-[#4A3E3D]">🍚 군산에서의 즐거운 점심 식사 (장소 미정)</h4>
-                    <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">군산 시내 영화동 근대 문화 거리에서 맛깔나는 점심 식사! (AI 추천: 개운하고 진한 소고기무국의 대표 노포 <strong>'한일옥'</strong>)</p>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 14:30</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🥖 이성당 명물 빵집 쇼핑</h4>
-                </div>
-
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 15:30</span>
-                        <span class="text-3xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">🌿 자연 박물관</span>
-                    </div>
-                    <h4 class="text-sm font-bold text-[#4A3E3D]">🌿 국립생태원 에코리움 관람 (충남 서천)</h4>
-                    <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">세계 5대 기후의 온실 생태계를 한 번에 느끼며 환상적인 사진을 남길 수 있는 실내 기후 생태 체험관을 쾌적하게 산책합니다.</p>
-                    <div class="mt-3 bg-[#F4FBF7] border border-dashed border-emerald-200 rounded-xl p-3 text-3xs text-emerald-800">
-                        <strong>🗺️ 군산 ➔ 서천 ➔ 태안 고속 드라이브 연계 동선:</strong><br>
-                        이성당(군산)에서 <strong>금강하구둑</strong> 다리만 건너면 단 15분 만에 서천 국립생태원에 도착합니다! 관람 후, 동서천IC ➔ 서해안고속도로 ➔ 대천IC ➔ 바다 밑을 관통하는 신비로운 <strong>보령해저터널</strong> 및 77번 국도를 따라 태안 안면도 리솜까지 거침없이 시원하게 달립니다 (이동 약 1시간 20분 소요).
+                <!-- Check-out -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 11:00</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏡 고도한옥 1985 체크아웃</h4>
+                        <p class="text-xs text-[#7A645A] mt-1">아름다운 독채 한옥을 정리하고 분리수거 및 소지품을 꼼꼼하게 챙겨 출발합니다.</p>
                     </div>
                 </div>
 
-                <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
-                    <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 18:00</span>
-                    <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏨 아일랜드 리솜 입실 & 오션 바베큐</h4>
-                    <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">바닷가 선셋 명소인 아일랜드 리솜 바베큐장에서 꽃지 해넘이를 보며 낭만적인 고기파티로 M.T. 최고조 분위기를 장식합니다.</p>
+                <!-- Iksan Station -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 12:00</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🚉 익산역 경유</h4>
+                        <p class="text-xs text-[#7A645A] mt-1">숙소에서 출발하여 약 20분을 이동해 익산역에서 중간 동료 합류 픽업 및 이동 동선 체크.</p>
+                    </div>
+                </div>
+
+                <!-- Confirm Hanilok -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 13:00</span>
+                            <span class="text-3xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">🍀 점심 확정 🍀</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🍛 점심 식사 : 군산 한일옥</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">군산의 오랜 역사를 자랑하는 소고기무국의 절대 강자 **한일옥**에서 깊고 시원한 국물로 감동적인 점심식사를 만끽합니다.</p>
+                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
+                            <strong>🗺️ 구글맵 동선:</strong> 익산역에서 군산 한일옥까지 차량으로 약 30분 소요됩니다. (주차는 식당 맞은편 무료 공영주차장 이용 편리)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lee Sung Dang -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 14:30</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🥖 이성당 명물 빵집 쇼핑</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">전국에서 가장 오래된 대표 빵집에서 야채빵, 단팥빵을 가볍게 맛보고 디저트로 조달합니다.</p>
+                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
+                            <strong>🗺️ 구글맵 동선:</strong> 한일옥 식당에서 이성당 빵집까지는 차량으로 약 3분(도보 5분) 거리로 초인접해 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ecorium -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 15:30</span>
+                            <span class="text-3xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">🌿 자연 온실</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🌿 국립생태원 에코리움 관람 (충남 서천)</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">세계 5대 기후의 온실 생태계를 한 번에 느끼며 쾌적하고 웅장한 기후 생태 체험관을 산책합니다.</p>
+                        <div class="mt-3 bg-[#F4FBF7] border border-dashed border-emerald-200 rounded-xl p-3 text-3xs text-emerald-800">
+                            <strong>🗺️ 군산 ➔ 서천 구글맵 동선:</strong> 이성당에서 <strong>금강하구둑</strong> 다리만 건너면 단 15분 만에 서천 국립생태원에 무사 도킹합니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anmyeondo Fish Market (New Stop!) -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 17:10</span>
+                            <span class="text-3xs font-bold text-sky-500 bg-[#E0F2FE] px-2.5 py-0.5 rounded-full">🐟 싱싱한 활어회 🐟</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🐟 안면도 수산시장 횟감 포장</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">태안 안면도 중심지에 위치한 수산시장에서 저녁 바베큐 파티 때 곁들여 먹을 싱싱하고 쫄깃한 제철 횟감을 가득 포장합니다.</p>
+                        <div class="mt-3 bg-[#F0F8FF] border border-dashed border-sky-200 rounded-xl p-3 text-3xs text-sky-800">
+                            <strong>🗺️ 서천 ➔ 보령해저터널 ➔ 안면도 수산시장 동선:</strong> 서천 국립생태원에서 출발해 서해안고속도로 대천IC 진출 후, 바다 밑 신비로운 <strong>보령해저터널</strong>(77번 국도)을 통과해 안면도 수산시장까지 신나게 질주합니다 (차량으로 약 1시간 15분 소요).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hanaro Mart (New Stop!) -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 17:45</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D]">🛒 수산시장 근처 하나로마트 장보기</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">수산시장 바로 근처에 인접한 하나로마트 안면도지점에 들려, 바베큐 파티용 숯불 고기와 채소, 구울 소시지, 마실 주류/음료를 빈틈없이 쇼핑합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Resom Check-In & Seafood BBQ Party (New details!) -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm border-l-4 border-l-rose-400">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 18:30</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🏨 리솜 입실 & 대망의 콜라보 바베큐 & 회 파티 🥩🐟</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">안면도 꽃지 노을이 일렁이는 아일랜드 리솜 리조트에 체크인 후, 노을 빛을 맞으며 따뜻한 고기 바베큐와 쫄깃탱글한 바다 활어회를 환상적으로 곁들여 최고급 저녁 만찬을 즐깁니다.</p>
+                        <div class="mt-3 bg-[#FFF5F5] border border-dashed border-rose-200 rounded-xl p-3 text-3xs text-rose-800">
+                            <strong>🗺️ 마트 ➔ 리조트 동선:</strong> 마트에서 꽃지해수욕장 아일랜드 리솜까지는 차로 10분 내로 닿는 매우 안정적인 최단거리 동선입니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Late-night Takeout (New!) -->
+                <div class="relative group">
+                    <span class="absolute -left-[35px] top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white border-4 border-[#A3E4D7] shadow-sm"></span>
+                    <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 hover:border-[#A3E4D7] transition-all shadow-sm">
+                        <span class="text-2xs font-extrabold bg-[#EBFBF9] text-[#16A085] border border-[#A2E2D6] px-2.5 py-1 rounded-xl">🕒 21:30</span>
+                        <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🍿 아일랜드 리솜 내 한신포차 또는 BBQ치킨 야식 마무리</h4>
+                        <p class="text-xs text-[#7A645A] mt-1 leading-relaxed">리조트 내부에 입점한 감성 포차 **한신포차** 또는 바삭한 **BBQ치킨**에서 군침 도는 야식을 포장하여 안락한 객실에서 친구들과 깊고 아늑하게 수다를 떨며 하루를 화려하게 마감합니다.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -303,7 +378,7 @@
                 <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
                     <span class="text-2xs font-extrabold bg-[#FFF4EE] text-[#D4A373] border border-[#FCD5C0] px-2.5 py-1 rounded-xl">🕒 11:30</span>
                     <h4 class="text-sm font-bold text-[#4A3E3D] mt-2">🌊 안면도 오션뷰 테라스 카페 휴식</h4>
-                    <p class="text-xs text-[#7A645A] mt-1">시원한 아아를 마시며 이번 JJ Company 엠티 인생샷 피드를 가볍게 정리합니다.</p>
+                    <p class="text-xs text-[#7A645A] mt-1">시원한 아아를 마시며 이번 JJ Company 엠티 인생샷 피드를 정리합니다.</p>
                 </div>
 
                 <div class="bg-white border-2 border-[#F3EDE2] rounded-2xl p-5 shadow-sm">
@@ -320,6 +395,7 @@
             </div>
         </div>
 
+        <!-- STREAMING_CHUNK: Preparing the Gemini AI chatbot visual helper layout... -->
         <!-- AI TOUR ASSISTANT PANEL -->
         <div id="panel-ai" class="tab-panel hidden space-y-6">
             <div class="border-b-2 border-[#E8DFD0] pb-3">
@@ -367,14 +443,14 @@
                         <div class="flex flex-col items-start max-w-[85%]">
                             <span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span>
                             <div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
-                                어서 오세요! <strong>경남 진주</strong>에서 출발해 <strong>익산의 매혹적인 보석박물관·왕궁포레스트·미륵사지·중앙시장</strong>을 뚫고 <strong>서천 에코리움</strong>, 안면도로 내달리는 알짜 우정여행 가이드 요정이에요! 🗺️✨ 익산 중앙시장의 먹거리나 첫날 동선에 대해 궁금하신 점을 가볍게 여쭤봐 주세요! 💕
+                                어서 오세요! <strong>경남 진주</strong>에서 출발해 <strong>익산의 매혹적인 고도한옥</strong>을 뚫고 <strong>군산 한일옥</strong>, <strong>서천 에코리움</strong>, 그리고 <strong>태안 아일랜드 리솜 야간 한신포차 콤보</strong>까지 설계된 알짜 우정여행 가이드 요정이에요! 🗺️✨ 안면도 수산시장 횟감 추천이나 드라이브 동선에 대해 궁금하신 점을 가볍게 여쭤봐 주세요! 💕
                             </div>
                         </div>
                     </div>
 
                     <div class="px-3 py-1.5 border-t border-[#F3EDE2] bg-[#FFF9F5] flex gap-1.5 overflow-x-auto scrollbar-none">
-                        <button onclick="sendQuickQuery('익산 중앙시장에서 꼭 사야 하는 현지 야식이나 유명한 주전부리 먹거리 추천해줘!')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🛒 중앙시장 먹거리 추천</button>
-                        <button onclick="sendQuickQuery('진주에서 본향 식당까지 가는 고속도로 상에 쉬기 좋고 이색 먹거리가 많은 고속도로 휴게소는 어디인가요?')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🛣️ 순천완주고속도로 휴게소</button>
+                        <button onclick="sendQuickQuery('안면도 수산시장에서 요새 7월에 가장 저렴하고 쫄깃하게 먹을 수 있는 대표 횟감 물고기 종류 추천해줘!')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🐟 7월 안면도 제철 활어회</button>
+                        <button onclick="sendQuickQuery('서해안 고속도로 타고 가다가 서천 에코리움 근처에서 가볍게 들러볼 만한 예쁜 갈대밭이나 금강 뷰 포인트가 있나요?')" class="flex-shrink-0 bg-white hover:bg-violet-50 text-stone-600 border px-2 py-1 rounded-lg text-[9px] font-bold">🌾 금강하구둑 조망 명소</button>
                     </div>
 
                     <form id="chat-input-form" class="p-2 border-t-2 border-[#F3EDE2] bg-white flex gap-1.5">
@@ -392,6 +468,7 @@
 
     </main>
 
+    <!-- STREAMING_CHUNK: Integrating the tab toggle script and API triggers... -->
     <script>
         function switchTab(tabId) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
@@ -449,7 +526,7 @@
             chatBox.innerHTML += `<div id="${loaderId}" class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-white border-2 border-[#F3EDE2] text-stone-400 p-3 rounded-2xl rounded-tl-none text-xs flex gap-1"><span class="animate-bounce">●</span><span class="animate-bounce" style="animation-delay:0.1s">●</span><span>구글맵 경로 연산중..</span></div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            const system = "너는 JJ Company M.T. 전문 귀여운 파스텔 요정 비서야. 진주시에서 출발해 익산 보석박물관, 왕궁포레스트, 미륵사지, 익산 중앙시장 장보기 꿀동선 가이드를 가르쳐주고, 2일차 서천 국립생태원 에코리움 관람 팁 및 태안 안면도 아일랜드 리솜으로 향하는 최적 구글맵 경로를 기분 좋게 대답해줘.";
+            const system = "너는 JJ Company M.T. 전문 귀여운 파스텔 요정 비서야. 진주시에서 출발해 익산 보석박물관, 군산 한일옥(확정), 서천 생태원 에코리움, 안면도 수산시장 횟감 포장 꿀동선 가이드를 가르쳐주고, 밤에 리솜 아일랜드 내부 한신포차와 BBQ치킨 야식 조화의 낭만을 신나게 대답해줘.";
             
             try {
                 const data = await triggerGeminiCall(text, system);
@@ -458,7 +535,7 @@
                 chatBox.innerHTML += `<div class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-white border-2 border-[#F3EDE2] text-xs text-[#4A3E3D] p-3 rounded-2xl rounded-tl-none whitespace-pre-wrap leading-relaxed shadow-sm">${reply}</div></div>`;
             } catch(e) {
                 document.getElementById(loaderId).remove();
-                chatBox.innerHTML += `<div class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-rose-50 border border-rose-200 text-xs text-rose-700 p-3 rounded-2xl rounded-tl-none shadow-sm">API Key를 마법 스톤에 쏙 장착해 주시면 실시간 익산 중앙시장 명품 맛집 정보 및 구글맵 연계 상담이 깨어난답니다! 💕</div></div>`;
+                chatBox.innerHTML += `<div class="flex flex-col items-start max-w-[85%]"><span class="text-[9px] text-stone-400 font-bold mb-0.5">요정 비서 🧚‍♀️</span><div class="bg-rose-50 border border-rose-200 text-xs text-rose-700 p-3 rounded-2xl rounded-tl-none shadow-sm">API Key를 마법 스톤에 쏙 장착해 주시면 실시간 익산/군산 맛집 정보 및 안면도 수산시장 싱싱한 자연산 횟감 추천 가이드 상담이 깨어난답니다! 💕</div></div>`;
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
